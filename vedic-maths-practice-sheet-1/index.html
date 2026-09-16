@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedic Maths • Practice Sheet 1</title>
+<style>
+:root{
+  --bg:#09090b;--panel:#111113;--panel2:#18181b;--border:#27272a;
+  --text:#f4f4f5;--muted:#a1a1aa;--dim:#71717a;--white:#fff;
+  --green:#4ade80;--yellow:#facc15;--red:#f87171;
+}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+body{overflow:hidden}button{font:inherit}.app{height:100vh;display:flex;flex-direction:column}
+.topbar{height:64px;display:flex;align-items:center;gap:18px;padding:0 22px;border-bottom:1px solid var(--border);background:rgba(9,9,11,.96);flex-shrink:0}
+.brand{font-weight:800;letter-spacing:-.4px;white-space:nowrap}.brand small{display:block;font-size:10px;color:var(--dim);font-weight:600;letter-spacing:.5px;margin-top:2px}
+.top-actions{margin-left:auto;display:flex;gap:8px}.icon-btn,.ghost-btn{border:1px solid var(--border);background:var(--panel);color:var(--muted);border-radius:9px;padding:9px 12px;cursor:pointer}
+.icon-btn:hover,.ghost-btn:hover{color:var(--text);border-color:#3f3f46}.layout{flex:1;display:flex;min-height:0}
+.sidebar{width:300px;border-right:1px solid var(--border);background:#0d0d0f;padding:18px;overflow:auto;flex-shrink:0}
+.side-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);font-weight:750;margin:6px 8px 10px}
+.category{width:100%;text-align:left;border:1px solid transparent;background:transparent;color:var(--muted);padding:11px 12px;border-radius:10px;cursor:pointer;margin-bottom:4px}
+.category:hover{background:var(--panel2);color:var(--text)}.category.active{background:#1f1f23;color:var(--text);border-color:#303036}
+.category .row{display:flex;justify-content:space-between;gap:8px}.category .count{font-size:11px;color:var(--dim)}
+.category .range{font-size:10px;color:#52525b;margin-top:4px}.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.dashboard{padding:30px;overflow:auto;height:100%}.hero{max-width:1100px;margin:0 auto}
+.kicker{font-size:12px;color:var(--green);font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px}
+h1{font-size:clamp(30px,4vw,48px);letter-spacing:-1.8px;margin:0 0 8px}.subtitle{color:var(--muted);max-width:760px;line-height:1.6;margin-bottom:28px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px}.card{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:18px}
+.card strong{font-size:25px;display:block;margin-bottom:4px}.card span{font-size:12px;color:var(--muted)}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:24px 0 12px}.section-head h2{font-size:16px;margin:0}.section-head span{font-size:12px;color:var(--dim)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.practice-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;text-align:left;color:var(--text)}
+.practice-card:hover{border-color:#52525b;transform:translateY(-1px)}.practice-card b{display:block;font-size:14px;margin-bottom:6px}
+.practice-card span{font-size:12px;color:var(--muted)}.practice-card em{display:block;font-size:10px;color:var(--dim);font-style:normal;margin-top:8px}
+.practice{display:none;height:100%;flex-direction:column}.practicebar{height:58px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0}
+.practicebar .meta{font-size:12px;color:var(--muted)}.progress{margin-left:auto;color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.timer{font-size:13px;font-weight:800;color:var(--yellow);min-width:54px;text-align:center}.focus{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+.mode-label{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;color:var(--dim);font-weight:800;margin-bottom:28px}.question-no{font-size:12px;color:var(--dim);margin-bottom:18px}
+.question{font-size:clamp(38px,7vw,86px);font-weight:750;letter-spacing:1px;line-height:1.2;max-width:1200px}
+.result{display:none;margin-top:32px}.result .big{font-size:clamp(30px,5vw,54px);font-weight:850}.result .small{color:var(--muted);margin-top:8px}
+.result.solved .big{color:var(--green)}.result.timeout .big{color:var(--red)}
+.bottom{height:78px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0}
+.primary{border:0;background:var(--white);color:#09090b;padding:12px 18px;border-radius:10px;font-weight:800;cursor:pointer}
+.secondary{border:1px solid var(--border);background:var(--panel);color:var(--muted);padding:11px 15px;border-radius:10px;cursor:pointer}
+.hint{position:absolute;bottom:94px;color:#52525b;font-size:11px}.key{border:1px solid #3f3f46;background:#18181b;padding:3px 7px;border-radius:5px;color:#71717a}
+.setup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
+.setup-box{width:min(500px,100%);background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:22px}.setup-box h2{margin:0 0 5px;font-size:20px}
+.setup-box p{margin:0 0 20px;color:var(--muted);font-size:13px}.setting{margin:16px 0}.setting label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px}
+input[type=number],select{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:11px}
+.setup-actions{display:flex;gap:8px;margin-top:20px}.setup-actions button{flex:1}
+.results-screen{display:none;height:100%;align-items:center;justify-content:center;padding:25px}.results-box{width:min(680px,100%);text-align:center}
+.results-box h2{font-size:34px;margin:0 0 8px}.results-box p{color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:25px 0}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:16px}.stat b{display:block;font-size:23px;margin-bottom:4px}.stat span{font-size:11px;color:var(--muted)}
+@media(max-width:850px){.sidebar{width:230px}.cards{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}}
+@media(max-width:650px){.sidebar{display:none}.topbar{padding:0 14px}.dashboard{padding:20px 15px}.cards{grid-template-columns:1fr}.practicebar{padding:0 12px}.practicebar .meta{display:none}.stats{grid-template-columns:repeat(2,1fr)}.bottom{height:70px}.hint{bottom:84px}}
+/* Mobile practice redesign: swipe navigation */
+@media(max-width:700px){
+  body{overflow-x:hidden}
+  .sidebar{display:none!important}
+  .practice-stage{
+    min-height:calc(100dvh - 110px)!important;
+    padding:16px 12px!important;
+    box-sizing:border-box;
+    touch-action:pan-y;
+  }
+  .question-expression{
+    font-size:clamp(2.25rem,11vw,4rem)!important;
+    line-height:1.12!important;
+    word-break:break-word;
+  }
+  .desktop-space-hint{display:none!important}
+  .practice-controls{display:none!important}
+  .practice-stage.swipe-left{animation:swipeLeft .18s ease}
+  .practice-stage.swipe-right{animation:swipeRight .18s ease}
+  @keyframes swipeLeft{from{transform:translateX(0);opacity:1}to{transform:translateX(-18px);opacity:.75}}
+  @keyframes swipeRight{from{transform:translateX(0);opacity:1}to{transform:translateX(18px);opacity:.75}}
+}
+
+
+
+/* Mobile: use the existing SPACE — Solved control as the only action */
+@media(max-width:700px){
+  .practice .bottom{
+    position:fixed;
+    left:0;right:0;bottom:0;
+    height:auto;
+    z-index:100;
+    padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(9,9,11,.96);
+    backdrop-filter:blur(12px);
+    border-top:1px solid var(--border);
+    box-sizing:border-box;
+  }
+  .practice .bottom #prevBtn,
+  .practice .bottom #nextBtn{display:none!important}
+  .practice .bottom #spaceBtn{
+    display:block!important;
+    width:100%;
+    min-height:58px;
+    margin:0;
+    border-radius:14px;
+    font-size:18px;
+    font-weight:850;
+    letter-spacing:.2px;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .practice .focus{padding-bottom:100px!important}
+  .practice .hint{display:none!important}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand">Vedic Maths<small>PRACTICE SHEET 1 • 1050 QUESTIONS</small></div>
+  <div class="top-actions">
+    <button class="ghost-btn" id="homeBtn">Home</button>
+    <button class="ghost-btn" id="settingsBtn">Practice Setup</button>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="sidebar">
+  <div class="side-title">Question Sections</div>
+  <div id="categoryList"></div>
+</aside>
+
+<main class="main">
+<section class="dashboard" id="dashboard">
+  <div class="hero">
+    <div class="kicker">Focused calculation training</div>
+    <h1>Train speed. Build accuracy.</h1>
+    <div class="subtitle">Practice directly from the 1,050 questions in Vedic Maths Practice Sheet - 1. Choose a section, set your time, and solve one question at a time.</div>
+    <div class="cards">
+      <div class="card"><strong>1,050</strong><span>Questions in the worksheet</span></div>
+      <div class="card"><strong>15</strong><span>Practice sections</span></div>
+      <div class="card"><strong>SPACE</strong><span>Reveal answer + record solve time</span></div>
+    </div>
+    <div class="section-head"><h2>Choose a practice section</h2><span id="selectedLabel">All questions</span></div>
+    <div class="grid" id="practiceGrid"></div>
+  </div>
+</section>
+
+<section class="practice" id="practice">
+  <div class="practicebar">
+    <button class="secondary" id="quitBtn">← Exit</button>
+    <div class="meta" id="practiceMeta"></div>
+    <div class="timer" id="timer">10.0</div>
+    <div class="progress" id="progress">1 / 10</div>
+  </div>
+  <div class="focus">
+    <div class="mode-label">Focus Mode</div>
+    <div class="question-no" id="questionNo">Question 1</div>
+    <div class="question" id="question"></div>
+    <div class="result solved" id="solvedResult">
+      <div class="big">✓ SOLVED</div>
+      <div class="small" id="solvedTime"></div>
+      <div class="small" id="solvedAnswer"></div>
+    </div>
+    <div class="result timeout" id="timeoutResult">
+      <div class="big">TIME UP</div>
+      <div class="small" id="timeoutAnswer"></div>
+    </div>
+    <div class="hint" id="hint">Press <span class="key">SPACE</span> when you have found the answer</div>
+  </div>
+  <div class="bottom">
+    <button class="secondary" id="prevBtn">Previous</button>
+    <button class="primary" id="spaceBtn">SPACE — Solved</button>
+    <button class="secondary" id="nextBtn">Skip</button>
+  </div>
+</section>
+
+<section class="results-screen" id="resultsScreen">
+  <div class="results-box">
+    <h2>Session complete</h2>
+    <p id="resultsSubtitle"></p>
+    <div class="stats">
+      <div class="stat"><b id="statQuestions">0</b><span>Questions</span></div>
+      <div class="stat"><b id="statSolved">0</b><span>Solved</span></div>
+      <div class="stat"><b id="statTimeout">0</b><span>Time Up</span></div>
+      <div class="stat"><b id="statAvg">—</b><span>Avg. solve time</span></div>
+    </div>
+    <button class="primary" id="againBtn">Practice Again</button>
+    <button class="secondary" id="resultHomeBtn">Back Home</button>
+  </div>
+</section>
+</main>
+</div>
+</div>
+
+<div class="setup-overlay" id="setupOverlay">
+  <div class="setup-box">
+    <h2>Practice Setup</h2>
+    <p id="setupDescription">Configure this practice session.</p>
+    <div class="setting">
+      <label><span>Questions in this session</span><span id="sessionCountLabel">20</span></label>
+      <input type="number" id="sessionCount" min="1" max="1050" value="20">
+    </div>
+    <div class="setting">
+      <label><span>Time per question (seconds)</span><span id="timeLabel">10</span></label>
+      <input type="number" id="timeInput" min="1" max="300" step="0.5" value="10">
+    </div>
+    <div class="setting">
+      <label><span>Question order</span></label>
+      <select id="orderInput">
+        <option value="sequential">Worksheet order</option>
+        <option value="random">Random from selected section</option>
+      </select>
+    </div>
+    <div class="setup-actions">
+      <button class="secondary" id="cancelSetup">Cancel</button>
+      <button class="primary" id="startBtn">Start Practice</button>
+    </div>
+  </div>
+</div>
+<script>
+
+function calculateExpression(expression){
+  const normalized = String(expression)
+    .replace(/[−–—]/g, "-")
+    .replace(/[×xX]/g, "*")
+    .replace(/÷/g, "/")
+    .replace(/\s+/g, "");
+
+  if(!/^[0-9.+\-*/()]+$/.test(normalized)){
+    throw new Error("Unsupported expression: " + expression);
+  }
+
+  const value = Function('"use strict"; return (' + normalized + ')')();
+  if(!Number.isFinite(value)) throw new Error("Invalid arithmetic result");
+
+  const rounded = Math.round((value + Number.EPSILON) * 1e12) / 1e12;
+  return Object.is(rounded, -0) ? 0 : rounded;
+}
+
+
+const QUESTIONS = [{"id":1,"expression":"91 + 24","category":"add2"},{"id":2,"expression":"13 + 45","category":"add2"},{"id":3,"expression":"41 + 38","category":"add2"},{"id":4,"expression":"27 + 23","category":"add2"},{"id":5,"expression":"96 + 79","category":"add2"},{"id":6,"expression":"85 + 64","category":"add2"},{"id":7,"expression":"14 + 10","category":"add2"},{"id":8,"expression":"21 + 37","category":"add2"},{"id":9,"expression":"39 + 74","category":"add2"},{"id":10,"expression":"87 + 13","category":"add2"},{"id":11,"expression":"81 + 35","category":"add2"},{"id":12,"expression":"93 + 99","category":"add2"},{"id":13,"expression":"79 + 63","category":"add2"},{"id":14,"expression":"38 + 67","category":"add2"},{"id":15,"expression":"85 + 45","category":"add2"},{"id":16,"expression":"10 + 30","category":"add2"},{"id":17,"expression":"99 + 64","category":"add2"},{"id":18,"expression":"53 + 45","category":"add2"},{"id":19,"expression":"29 + 37","category":"add2"},{"id":20,"expression":"53 + 23","category":"add2"},{"id":21,"expression":"21 + 58","category":"add2"},{"id":22,"expression":"22 + 55","category":"add2"},{"id":23,"expression":"35 + 82","category":"add2"},{"id":24,"expression":"10 + 98","category":"add2"},{"id":25,"expression":"44 + 36","category":"add2"},{"id":26,"expression":"24 + 27","category":"add2"},{"id":27,"expression":"24 + 63","category":"add2"},{"id":28,"expression":"88 + 63","category":"add2"},{"id":29,"expression":"56 + 83","category":"add2"},{"id":30,"expression":"34 + 18","category":"add2"},{"id":31,"expression":"39 + 47","category":"add2"},{"id":32,"expression":"20 + 39","category":"add2"},{"id":33,"expression":"85 + 54","category":"add2"},{"id":34,"expression":"28 + 70","category":"add2"},{"id":35,"expression":"21 + 91","category":"add2"},{"id":36,"expression":"67 + 15","category":"add2"},{"id":37,"expression":"13 + 88","category":"add2"},{"id":38,"expression":"31 + 55","category":"add2"},{"id":39,"expression":"57 + 49","category":"add2"},{"id":40,"expression":"32 + 78","category":"add2"},{"id":41,"expression":"41 + 85","category":"add2"},{"id":42,"expression":"80 + 97","category":"add2"},{"id":43,"expression":"15 + 69","category":"add2"},{"id":44,"expression":"61 + 94","category":"add2"},{"id":45,"expression":"48 + 43","category":"add2"},{"id":46,"expression":"77 + 42","category":"add2"},{"id":47,"expression":"83 + 13","category":"add2"},{"id":48,"expression":"29 + 47","category":"add2"},{"id":49,"expression":"16 + 18","category":"add2"},{"id":50,"expression":"91 + 71","category":"add2"},{"id":51,"expression":"39 + 44","category":"add2"},{"id":52,"expression":"78 + 20","category":"add2"},{"id":53,"expression":"35 + 78","category":"add2"},{"id":54,"expression":"37 + 16","category":"add2"},{"id":55,"expression":"48 + 75","category":"add2"},{"id":56,"expression":"46 + 14","category":"add2"},{"id":57,"expression":"66 + 33","category":"add2"},{"id":58,"expression":"12 + 50","category":"add2"},{"id":59,"expression":"98 + 74","category":"add2"},{"id":60,"expression":"64 + 72","category":"add2"},{"id":61,"expression":"37 + 57","category":"add2"},{"id":62,"expression":"68 + 68","category":"add2"},{"id":63,"expression":"69 + 30","category":"add2"},{"id":64,"expression":"76 + 74","category":"add2"},{"id":65,"expression":"63 + 93","category":"add2"},{"id":66,"expression":"87 + 64","category":"add2"},{"id":67,"expression":"70 + 79","category":"add2"},{"id":68,"expression":"12 + 21","category":"add2"},{"id":69,"expression":"91 + 21","category":"add2"},{"id":70,"expression":"91 + 44","category":"add2"},{"id":71,"expression":"88 + 68","category":"add2"},{"id":72,"expression":"25 + 29","category":"add2"},{"id":73,"expression":"49 + 39","category":"add2"},{"id":74,"expression":"76 + 58","category":"add2"},{"id":75,"expression":"16 + 43","category":"add2"},{"id":76,"expression":"92 + 48","category":"add2"},{"id":77,"expression":"37 + 90","category":"add2"},{"id":78,"expression":"33 + 74","category":"add2"},{"id":79,"expression":"55 + 32","category":"add2"},{"id":80,"expression":"43 + 73","category":"add2"},{"id":81,"expression":"80 + 26","category":"add2"},{"id":82,"expression":"92 + 68","category":"add2"},{"id":83,"expression":"59 + 51","category":"add2"},{"id":84,"expression":"59 + 55","category":"add2"},{"id":85,"expression":"94 + 20","category":"add2"},{"id":86,"expression":"45 + 20","category":"add2"},{"id":87,"expression":"34 + 92","category":"add2"},{"id":88,"expression":"16 + 98","category":"add2"},{"id":89,"expression":"49 + 31","category":"add2"},{"id":90,"expression":"60 + 25","category":"add2"},{"id":91,"expression":"62 + 14","category":"add2"},{"id":92,"expression":"88 + 14","category":"add2"},{"id":93,"expression":"72 + 35","category":"add2"},{"id":94,"expression":"59 + 39","category":"add2"},{"id":95,"expression":"49 + 61","category":"add2"},{"id":96,"expression":"67 + 18","category":"add2"},{"id":97,"expression":"80 + 15","category":"add2"},{"id":98,"expression":"84 + 71","category":"add2"},{"id":99,"expression":"74 + 77","category":"add2"},{"id":100,"expression":"30 + 17","category":"add2"},{"id":101,"expression":"620 + 182","category":"add3"},{"id":102,"expression":"971 + 290","category":"add3"},{"id":103,"expression":"170 + 709","category":"add3"},{"id":104,"expression":"169 + 791","category":"add3"},{"id":105,"expression":"982 + 340","category":"add3"},{"id":106,"expression":"513 + 222","category":"add3"},{"id":107,"expression":"683 + 352","category":"add3"},{"id":108,"expression":"692 + 708","category":"add3"},{"id":109,"expression":"140 + 734","category":"add3"},{"id":110,"expression":"995 + 364","category":"add3"},{"id":111,"expression":"815 + 833","category":"add3"},{"id":112,"expression":"275 + 174","category":"add3"},{"id":113,"expression":"728 + 725","category":"add3"},{"id":114,"expression":"257 + 835","category":"add3"},{"id":115,"expression":"505 + 849","category":"add3"},{"id":116,"expression":"189 + 411","category":"add3"},{"id":117,"expression":"561 + 583","category":"add3"},{"id":118,"expression":"857 + 373","category":"add3"},{"id":119,"expression":"186 + 425","category":"add3"},{"id":120,"expression":"192 + 639","category":"add3"},{"id":121,"expression":"573 + 368","category":"add3"},{"id":122,"expression":"137 + 389","category":"add3"},{"id":123,"expression":"290 + 697","category":"add3"},{"id":124,"expression":"740 + 124","category":"add3"},{"id":125,"expression":"520 + 377","category":"add3"},{"id":126,"expression":"881 + 955","category":"add3"},{"id":127,"expression":"677 + 511","category":"add3"},{"id":128,"expression":"159 + 197","category":"add3"},{"id":129,"expression":"829 + 543","category":"add3"},{"id":130,"expression":"343 + 125","category":"add3"},{"id":131,"expression":"199 + 447","category":"add3"},{"id":132,"expression":"398 + 617","category":"add3"},{"id":133,"expression":"571 + 757","category":"add3"},{"id":134,"expression":"364 + 610","category":"add3"},{"id":135,"expression":"243 + 884","category":"add3"},{"id":136,"expression":"721 + 269","category":"add3"},{"id":137,"expression":"878 + 864","category":"add3"},{"id":138,"expression":"749 + 653","category":"add3"},{"id":139,"expression":"714 + 940","category":"add3"},{"id":140,"expression":"117 + 921","category":"add3"},{"id":141,"expression":"129 + 955","category":"add3"},{"id":142,"expression":"438 + 972","category":"add3"},{"id":143,"expression":"572 + 150","category":"add3"},{"id":144,"expression":"117 + 802","category":"add3"},{"id":145,"expression":"622 + 589","category":"add3"},{"id":146,"expression":"401 + 608","category":"add3"},{"id":147,"expression":"870 + 679","category":"add3"},{"id":148,"expression":"238 + 141","category":"add3"},{"id":149,"expression":"502 + 365","category":"add3"},{"id":150,"expression":"631 + 564","category":"add3"},{"id":151,"expression":"260 + 419","category":"add3"},{"id":152,"expression":"717 + 201","category":"add3"},{"id":153,"expression":"899 + 153","category":"add3"},{"id":154,"expression":"720 + 840","category":"add3"},{"id":155,"expression":"423 + 683","category":"add3"},{"id":156,"expression":"473 + 664","category":"add3"},{"id":157,"expression":"967 + 564","category":"add3"},{"id":158,"expression":"389 + 176","category":"add3"},{"id":159,"expression":"758 + 334","category":"add3"},{"id":160,"expression":"752 + 557","category":"add3"},{"id":161,"expression":"319 + 975","category":"add3"},{"id":162,"expression":"230 + 675","category":"add3"},{"id":163,"expression":"286 + 849","category":"add3"},{"id":164,"expression":"677 + 457","category":"add3"},{"id":165,"expression":"918 + 783","category":"add3"},{"id":166,"expression":"480 + 108","category":"add3"},{"id":167,"expression":"410 + 732","category":"add3"},{"id":168,"expression":"134 + 731","category":"add3"},{"id":169,"expression":"386 + 108","category":"add3"},{"id":170,"expression":"988 + 824","category":"add3"},{"id":171,"expression":"931 + 130","category":"add3"},{"id":172,"expression":"973 + 166","category":"add3"},{"id":173,"expression":"183 + 859","category":"add3"},{"id":174,"expression":"810 + 170","category":"add3"},{"id":175,"expression":"212 + 693","category":"add3"},{"id":176,"expression":"750 + 535","category":"add3"},{"id":177,"expression":"320 + 396","category":"add3"},{"id":178,"expression":"522 + 694","category":"add3"},{"id":179,"expression":"400 + 199","category":"add3"},{"id":180,"expression":"699 + 247","category":"add3"},{"id":181,"expression":"601 + 655","category":"add3"},{"id":182,"expression":"819 + 449","category":"add3"},{"id":183,"expression":"658 + 811","category":"add3"},{"id":184,"expression":"523 + 291","category":"add3"},{"id":185,"expression":"602 + 238","category":"add3"},{"id":186,"expression":"788 + 229","category":"add3"},{"id":187,"expression":"145 + 784","category":"add3"},{"id":188,"expression":"128 + 908","category":"add3"},{"id":189,"expression":"814 + 464","category":"add3"},{"id":190,"expression":"432 + 348","category":"add3"},{"id":191,"expression":"271 + 484","category":"add3"},{"id":192,"expression":"624 + 410","category":"add3"},{"id":193,"expression":"833 + 329","category":"add3"},{"id":194,"expression":"660 + 477","category":"add3"},{"id":195,"expression":"331 + 969","category":"add3"},{"id":196,"expression":"513 + 168","category":"add3"},{"id":197,"expression":"926 + 894","category":"add3"},{"id":198,"expression":"808 + 372","category":"add3"},{"id":199,"expression":"794 + 725","category":"add3"},{"id":200,"expression":"916 + 386","category":"add3"},{"id":201,"expression":"3897 + 9904","category":"add4"},{"id":202,"expression":"9328 + 3080","category":"add4"},{"id":203,"expression":"6453 + 8089","category":"add4"},{"id":204,"expression":"3564 + 5579","category":"add4"},{"id":205,"expression":"4884 + 8558","category":"add4"},{"id":206,"expression":"4107 + 3611","category":"add4"},{"id":207,"expression":"2845 + 3320","category":"add4"},{"id":208,"expression":"5878 + 8866","category":"add4"},{"id":209,"expression":"6169 + 8659","category":"add4"},{"id":210,"expression":"7201 + 8125","category":"add4"},{"id":211,"expression":"1132 + 6742","category":"add4"},{"id":212,"expression":"5588 + 5129","category":"add4"},{"id":213,"expression":"2829 + 6127","category":"add4"},{"id":214,"expression":"2658 + 1082","category":"add4"},{"id":215,"expression":"7629 + 1416","category":"add4"},{"id":216,"expression":"9652 + 5124","category":"add4"},{"id":217,"expression":"3833 + 6610","category":"add4"},{"id":218,"expression":"6711 + 7682","category":"add4"},{"id":219,"expression":"3840 + 6600","category":"add4"},{"id":220,"expression":"4695 + 5216","category":"add4"},{"id":221,"expression":"5314 + 5867","category":"add4"},{"id":222,"expression":"4330 + 9831","category":"add4"},{"id":223,"expression":"9957 + 4140","category":"add4"},{"id":224,"expression":"3629 + 2992","category":"add4"},{"id":225,"expression":"2403 + 5897","category":"add4"},{"id":226,"expression":"3351 + 7824","category":"add4"},{"id":227,"expression":"7725 + 4596","category":"add4"},{"id":228,"expression":"2660 + 2444","category":"add4"},{"id":229,"expression":"6928 + 9462","category":"add4"},{"id":230,"expression":"8802 + 3569","category":"add4"},{"id":231,"expression":"9510 + 7723","category":"add4"},{"id":232,"expression":"4950 + 8140","category":"add4"},{"id":233,"expression":"3623 + 7873","category":"add4"},{"id":234,"expression":"8757 + 2734","category":"add4"},{"id":235,"expression":"9615 + 9049","category":"add4"},{"id":236,"expression":"8531 + 6102","category":"add4"},{"id":237,"expression":"8170 + 6973","category":"add4"},{"id":238,"expression":"9372 + 7980","category":"add4"},{"id":239,"expression":"5559 + 1878","category":"add4"},{"id":240,"expression":"4414 + 5310","category":"add4"},{"id":241,"expression":"5298 + 1790","category":"add4"},{"id":242,"expression":"4633 + 6803","category":"add4"},{"id":243,"expression":"2291 + 2083","category":"add4"},{"id":244,"expression":"7298 + 7108","category":"add4"},{"id":245,"expression":"6915 + 9856","category":"add4"},{"id":246,"expression":"3450 + 8461","category":"add4"},{"id":247,"expression":"1053 + 8177","category":"add4"},{"id":248,"expression":"8399 + 1007","category":"add4"},{"id":249,"expression":"9554 + 1398","category":"add4"},{"id":250,"expression":"9325 + 7113","category":"add4"},{"id":251,"expression":"47 + 29 + 33","category":"add3_2"},{"id":252,"expression":"23 + 84 + 19","category":"add3_2"},{"id":253,"expression":"77 + 50 + 80","category":"add3_2"},{"id":254,"expression":"71 + 60 + 75","category":"add3_2"},{"id":255,"expression":"69 + 11 + 56","category":"add3_2"},{"id":256,"expression":"84 + 40 + 80","category":"add3_2"},{"id":257,"expression":"77 + 44 + 66","category":"add3_2"},{"id":258,"expression":"67 + 81 + 47","category":"add3_2"},{"id":259,"expression":"44 + 23 + 98","category":"add3_2"},{"id":260,"expression":"54 + 47 + 40","category":"add3_2"},{"id":261,"expression":"39 + 56 + 90","category":"add3_2"},{"id":262,"expression":"81 + 25 + 79","category":"add3_2"},{"id":263,"expression":"60 + 12 + 68","category":"add3_2"},{"id":264,"expression":"49 + 52 + 16","category":"add3_2"},{"id":265,"expression":"61 + 60 + 16","category":"add3_2"},{"id":266,"expression":"18 + 99 + 45","category":"add3_2"},{"id":267,"expression":"27 + 12 + 75","category":"add3_2"},{"id":268,"expression":"61 + 75 + 22","category":"add3_2"},{"id":269,"expression":"80 + 54 + 35","category":"add3_2"},{"id":270,"expression":"50 + 16 + 83","category":"add3_2"},{"id":271,"expression":"52 + 25 + 87","category":"add3_2"},{"id":272,"expression":"25 + 16 + 56","category":"add3_2"},{"id":273,"expression":"16 + 74 + 72","category":"add3_2"},{"id":274,"expression":"20 + 32 + 62","category":"add3_2"},{"id":275,"expression":"79 + 80 + 19","category":"add3_2"},{"id":276,"expression":"40 + 71 + 95","category":"add3_2"},{"id":277,"expression":"78 + 16 + 44","category":"add3_2"},{"id":278,"expression":"23 + 52 + 92","category":"add3_2"},{"id":279,"expression":"42 + 82 + 17","category":"add3_2"},{"id":280,"expression":"78 + 87 + 20","category":"add3_2"},{"id":281,"expression":"26 + 57 + 25","category":"add3_2"},{"id":282,"expression":"51 + 46 + 25","category":"add3_2"},{"id":283,"expression":"22 + 87 + 56","category":"add3_2"},{"id":284,"expression":"44 + 26 + 40","category":"add3_2"},{"id":285,"expression":"29 + 99 + 73","category":"add3_2"},{"id":286,"expression":"94 + 57 + 74","category":"add3_2"},{"id":287,"expression":"98 + 37 + 63","category":"add3_2"},{"id":288,"expression":"41 + 73 + 40","category":"add3_2"},{"id":289,"expression":"74 + 88 + 53","category":"add3_2"},{"id":290,"expression":"15 + 54 + 84","category":"add3_2"},{"id":291,"expression":"59 + 69 + 31","category":"add3_2"},{"id":292,"expression":"20 + 64 + 66","category":"add3_2"},{"id":293,"expression":"63 + 89 + 72","category":"add3_2"},{"id":294,"expression":"58 + 58 + 70","category":"add3_2"},{"id":295,"expression":"97 + 12 + 89","category":"add3_2"},{"id":296,"expression":"87 + 83 + 28","category":"add3_2"},{"id":297,"expression":"47 + 66 + 52","category":"add3_2"},{"id":298,"expression":"93 + 59 + 22","category":"add3_2"},{"id":299,"expression":"82 + 15 + 87","category":"add3_2"},{"id":300,"expression":"46 + 63 + 48","category":"add3_2"},{"id":301,"expression":"24 + 12 + 62","category":"add3_2"},{"id":302,"expression":"83 + 97 + 77","category":"add3_2"},{"id":303,"expression":"25 + 92 + 54","category":"add3_2"},{"id":304,"expression":"18 + 14 + 98","category":"add3_2"},{"id":305,"expression":"17 + 83 + 66","category":"add3_2"},{"id":306,"expression":"25 + 71 + 53","category":"add3_2"},{"id":307,"expression":"63 + 16 + 31","category":"add3_2"},{"id":308,"expression":"97 + 33 + 97","category":"add3_2"},{"id":309,"expression":"45 + 40 + 34","category":"add3_2"},{"id":310,"expression":"12 + 42 + 84","category":"add3_2"},{"id":311,"expression":"42 + 64 + 79","category":"add3_2"},{"id":312,"expression":"70 + 79 + 55","category":"add3_2"},{"id":313,"expression":"29 + 69 + 60","category":"add3_2"},{"id":314,"expression":"82 + 27 + 47","category":"add3_2"},{"id":315,"expression":"59 + 88 + 77","category":"add3_2"},{"id":316,"expression":"43 + 24 + 20","category":"add3_2"},{"id":317,"expression":"37 + 90 + 65","category":"add3_2"},{"id":318,"expression":"97 + 40 + 88","category":"add3_2"},{"id":319,"expression":"99 + 57 + 65","category":"add3_2"},{"id":320,"expression":"58 + 39 + 16","category":"add3_2"},{"id":321,"expression":"86 + 11 + 97","category":"add3_2"},{"id":322,"expression":"62 + 39 + 17","category":"add3_2"},{"id":323,"expression":"55 + 33 + 33","category":"add3_2"},{"id":324,"expression":"13 + 30 + 68","category":"add3_2"},{"id":325,"expression":"98 + 76 + 71","category":"add3_2"},{"id":326,"expression":"43 + 54 + 56","category":"add3_2"},{"id":327,"expression":"92 + 94 + 64","category":"add3_2"},{"id":328,"expression":"67 + 23 + 22","category":"add3_2"},{"id":329,"expression":"45 + 70 + 44","category":"add3_2"},{"id":330,"expression":"24 + 62 + 52","category":"add3_2"},{"id":331,"expression":"72 + 58 + 72","category":"add3_2"},{"id":332,"expression":"22 + 18 + 55","category":"add3_2"},{"id":333,"expression":"77 + 35 + 44","category":"add3_2"},{"id":334,"expression":"93 + 74 + 34","category":"add3_2"},{"id":335,"expression":"69 + 18 + 44","category":"add3_2"},{"id":336,"expression":"75 + 74 + 72","category":"add3_2"},{"id":337,"expression":"23 + 11 + 99","category":"add3_2"},{"id":338,"expression":"42 + 65 + 17","category":"add3_2"},{"id":339,"expression":"77 + 82 + 61","category":"add3_2"},{"id":340,"expression":"72 + 68 + 43","category":"add3_2"},{"id":341,"expression":"98 + 50 + 70","category":"add3_2"},{"id":342,"expression":"73 + 40 + 12","category":"add3_2"},{"id":343,"expression":"65 + 56 + 14","category":"add3_2"},{"id":344,"expression":"98 + 54 + 90","category":"add3_2"},{"id":345,"expression":"49 + 32 + 24","category":"add3_2"},{"id":346,"expression":"88 + 80 + 17","category":"add3_2"},{"id":347,"expression":"35 + 13 + 90","category":"add3_2"},{"id":348,"expression":"67 + 31 + 48","category":"add3_2"},{"id":349,"expression":"71 + 52 + 54","category":"add3_2"},{"id":350,"expression":"64 + 33 + 77","category":"add3_2"},{"id":351,"expression":"728 + 159 + 298","category":"add3_3"},{"id":352,"expression":"407 + 667 + 447","category":"add3_3"},{"id":353,"expression":"578 + 585 + 292","category":"add3_3"},{"id":354,"expression":"559 + 812 + 476","category":"add3_3"},{"id":355,"expression":"214 + 614 + 843","category":"add3_3"},{"id":356,"expression":"451 + 780 + 232","category":"add3_3"},{"id":357,"expression":"602 + 847 + 545","category":"add3_3"},{"id":358,"expression":"326 + 276 + 974","category":"add3_3"},{"id":359,"expression":"767 + 797 + 949","category":"add3_3"},{"id":360,"expression":"486 + 744 + 872","category":"add3_3"},{"id":361,"expression":"364 + 908 + 864","category":"add3_3"},{"id":362,"expression":"498 + 476 + 747","category":"add3_3"},{"id":363,"expression":"539 + 289 + 562","category":"add3_3"},{"id":364,"expression":"986 + 465 + 402","category":"add3_3"},{"id":365,"expression":"989 + 877 + 623","category":"add3_3"},{"id":366,"expression":"923 + 910 + 949","category":"add3_3"},{"id":367,"expression":"563 + 416 + 141","category":"add3_3"},{"id":368,"expression":"670 + 699 + 988","category":"add3_3"},{"id":369,"expression":"229 + 594 + 713","category":"add3_3"},{"id":370,"expression":"436 + 470 + 792","category":"add3_3"},{"id":371,"expression":"242 + 767 + 857","category":"add3_3"},{"id":372,"expression":"107 + 838 + 690","category":"add3_3"},{"id":373,"expression":"201 + 970 + 743","category":"add3_3"},{"id":374,"expression":"382 + 563 + 154","category":"add3_3"},{"id":375,"expression":"363 + 852 + 860","category":"add3_3"},{"id":376,"expression":"817 + 246 + 326","category":"add3_3"},{"id":377,"expression":"417 + 686 + 688","category":"add3_3"},{"id":378,"expression":"629 + 270 + 421","category":"add3_3"},{"id":379,"expression":"144 + 316 + 261","category":"add3_3"},{"id":380,"expression":"841 + 205 + 618","category":"add3_3"},{"id":381,"expression":"457 + 591 + 204","category":"add3_3"},{"id":382,"expression":"703 + 800 + 446","category":"add3_3"},{"id":383,"expression":"875 + 230 + 840","category":"add3_3"},{"id":384,"expression":"872 + 462 + 585","category":"add3_3"},{"id":385,"expression":"217 + 806 + 651","category":"add3_3"},{"id":386,"expression":"193 + 644 + 211","category":"add3_3"},{"id":387,"expression":"464 + 780 + 940","category":"add3_3"},{"id":388,"expression":"730 + 839 + 435","category":"add3_3"},{"id":389,"expression":"669 + 703 + 698","category":"add3_3"},{"id":390,"expression":"467 + 711 + 830","category":"add3_3"},{"id":391,"expression":"891 + 605 + 700","category":"add3_3"},{"id":392,"expression":"365 + 458 + 763","category":"add3_3"},{"id":393,"expression":"694 + 882 + 792","category":"add3_3"},{"id":394,"expression":"174 + 779 + 314","category":"add3_3"},{"id":395,"expression":"478 + 989 + 807","category":"add3_3"},{"id":396,"expression":"411 + 592 + 704","category":"add3_3"},{"id":397,"expression":"915 + 940 + 433","category":"add3_3"},{"id":398,"expression":"710 + 764 + 590","category":"add3_3"},{"id":399,"expression":"403 + 317 + 401","category":"add3_3"},{"id":400,"expression":"554 + 620 + 413","category":"add3_3"},{"id":401,"expression":"276 + 771 + 731","category":"add3_3"},{"id":402,"expression":"253 + 566 + 897","category":"add3_3"},{"id":403,"expression":"724 + 880 + 179","category":"add3_3"},{"id":404,"expression":"935 + 940 + 571","category":"add3_3"},{"id":405,"expression":"422 + 733 + 112","category":"add3_3"},{"id":406,"expression":"770 + 229 + 363","category":"add3_3"},{"id":407,"expression":"652 + 992 + 331","category":"add3_3"},{"id":408,"expression":"342 + 225 + 711","category":"add3_3"},{"id":409,"expression":"710 + 467 + 451","category":"add3_3"},{"id":410,"expression":"573 + 978 + 430","category":"add3_3"},{"id":411,"expression":"837 + 372 + 213","category":"add3_3"},{"id":412,"expression":"572 + 912 + 779","category":"add3_3"},{"id":413,"expression":"154 + 773 + 948","category":"add3_3"},{"id":414,"expression":"476 + 604 + 542","category":"add3_3"},{"id":415,"expression":"451 + 803 + 435","category":"add3_3"},{"id":416,"expression":"226 + 751 + 398","category":"add3_3"},{"id":417,"expression":"879 + 571 + 296","category":"add3_3"},{"id":418,"expression":"844 + 752 + 335","category":"add3_3"},{"id":419,"expression":"650 + 967 + 685","category":"add3_3"},{"id":420,"expression":"644 + 350 + 468","category":"add3_3"},{"id":421,"expression":"110 + 853 + 827","category":"add3_3"},{"id":422,"expression":"380 + 800 + 252","category":"add3_3"},{"id":423,"expression":"851 + 548 + 500","category":"add3_3"},{"id":424,"expression":"269 + 814 + 737","category":"add3_3"},{"id":425,"expression":"642 + 399 + 794","category":"add3_3"},{"id":426,"expression":"409 + 902 + 119","category":"add3_3"},{"id":427,"expression":"695 + 749 + 996","category":"add3_3"},{"id":428,"expression":"780 + 581 + 684","category":"add3_3"},{"id":429,"expression":"938 + 394 + 688","category":"add3_3"},{"id":430,"expression":"298 + 739 + 244","category":"add3_3"},{"id":431,"expression":"224 + 345 + 932","category":"add3_3"},{"id":432,"expression":"841 + 886 + 258","category":"add3_3"},{"id":433,"expression":"730 + 629 + 320","category":"add3_3"},{"id":434,"expression":"502 + 439 + 148","category":"add3_3"},{"id":435,"expression":"562 + 124 + 183","category":"add3_3"},{"id":436,"expression":"656 + 563 + 614","category":"add3_3"},{"id":437,"expression":"823 + 854 + 508","category":"add3_3"},{"id":438,"expression":"368 + 868 + 702","category":"add3_3"},{"id":439,"expression":"641 + 718 + 427","category":"add3_3"},{"id":440,"expression":"973 + 667 + 585","category":"add3_3"},{"id":441,"expression":"424 + 734 + 686","category":"add3_3"},{"id":442,"expression":"315 + 943 + 486","category":"add3_3"},{"id":443,"expression":"701 + 116 + 605","category":"add3_3"},{"id":444,"expression":"874 + 508 + 394","category":"add3_3"},{"id":445,"expression":"909 + 632 + 398","category":"add3_3"},{"id":446,"expression":"429 + 944 + 372","category":"add3_3"},{"id":447,"expression":"830 + 563 + 433","category":"add3_3"},{"id":448,"expression":"395 + 560 + 354","category":"add3_3"},{"id":449,"expression":"903 + 613 + 603","category":"add3_3"},{"id":450,"expression":"902 + 750 + 566","category":"add3_3"},{"id":451,"expression":"4497 + 1212 + 9004","category":"add3_4"},{"id":452,"expression":"7375 + 7075 + 6622","category":"add3_4"},{"id":453,"expression":"7121 + 5816 + 7162","category":"add3_4"},{"id":454,"expression":"9250 + 9753 + 6155","category":"add3_4"},{"id":455,"expression":"7321 + 5332 + 1657","category":"add3_4"},{"id":456,"expression":"1229 + 9251 + 2701","category":"add3_4"},{"id":457,"expression":"8211 + 1096 + 3174","category":"add3_4"},{"id":458,"expression":"5172 + 3191 + 7617","category":"add3_4"},{"id":459,"expression":"7610 + 7639 + 1444","category":"add3_4"},{"id":460,"expression":"5311 + 5783 + 3607","category":"add3_4"},{"id":461,"expression":"8709 + 3759 + 5551","category":"add3_4"},{"id":462,"expression":"8046 + 6431 + 2380","category":"add3_4"},{"id":463,"expression":"6909 + 7370 + 4197","category":"add3_4"},{"id":464,"expression":"7723 + 4751 + 7778","category":"add3_4"},{"id":465,"expression":"7150 + 3771 + 9587","category":"add3_4"},{"id":466,"expression":"7577 + 5916 + 8168","category":"add3_4"},{"id":467,"expression":"6477 + 4077 + 6355","category":"add3_4"},{"id":468,"expression":"9887 + 8444 + 4140","category":"add3_4"},{"id":469,"expression":"5056 + 4126 + 7920","category":"add3_4"},{"id":470,"expression":"8146 + 6781 + 3931","category":"add3_4"},{"id":471,"expression":"7311 + 4369 + 4135","category":"add3_4"},{"id":472,"expression":"7879 + 9625 + 2729","category":"add3_4"},{"id":473,"expression":"2914 + 5693 + 3175","category":"add3_4"},{"id":474,"expression":"6764 + 4204 + 4707","category":"add3_4"},{"id":475,"expression":"3296 + 9054 + 9501","category":"add3_4"},{"id":476,"expression":"1606 + 4118 + 3868","category":"add3_4"},{"id":477,"expression":"1296 + 9264 + 4327","category":"add3_4"},{"id":478,"expression":"9803 + 1093 + 3825","category":"add3_4"},{"id":479,"expression":"2102 + 6442 + 3370","category":"add3_4"},{"id":480,"expression":"2065 + 7070 + 6067","category":"add3_4"},{"id":481,"expression":"5172 + 2326 + 6668","category":"add3_4"},{"id":482,"expression":"4660 + 3835 + 2480","category":"add3_4"},{"id":483,"expression":"2273 + 5463 + 3014","category":"add3_4"},{"id":484,"expression":"4970 + 5800 + 2811","category":"add3_4"},{"id":485,"expression":"3096 + 6434 + 8487","category":"add3_4"},{"id":486,"expression":"2571 + 7689 + 9717","category":"add3_4"},{"id":487,"expression":"4540 + 9619 + 1523","category":"add3_4"},{"id":488,"expression":"1602 + 9781 + 2938","category":"add3_4"},{"id":489,"expression":"7870 + 4114 + 3190","category":"add3_4"},{"id":490,"expression":"1728 + 3082 + 8342","category":"add3_4"},{"id":491,"expression":"3723 + 6101 + 5702","category":"add3_4"},{"id":492,"expression":"1687 + 3873 + 1076","category":"add3_4"},{"id":493,"expression":"1453 + 7093 + 9977","category":"add3_4"},{"id":494,"expression":"4234 + 2820 + 6130","category":"add3_4"},{"id":495,"expression":"9034 + 9097 + 8931","category":"add3_4"},{"id":496,"expression":"3195 + 7577 + 4011","category":"add3_4"},{"id":497,"expression":"7393 + 7786 + 9112","category":"add3_4"},{"id":498,"expression":"9604 + 3282 + 4580","category":"add3_4"},{"id":499,"expression":"3704 + 2300 + 7407","category":"add3_4"},{"id":500,"expression":"8415 + 9121 + 6150","category":"add3_4"},{"id":501,"expression":"83 − 24","category":"sub2"},{"id":502,"expression":"63 − 32","category":"sub2"},{"id":503,"expression":"55 − 39","category":"sub2"},{"id":504,"expression":"86 − 64","category":"sub2"},{"id":505,"expression":"81 − 10","category":"sub2"},{"id":506,"expression":"65 − 49","category":"sub2"},{"id":507,"expression":"63 − 56","category":"sub2"},{"id":508,"expression":"77 − 59","category":"sub2"},{"id":509,"expression":"46 − 42","category":"sub2"},{"id":510,"expression":"71 − 58","category":"sub2"},{"id":511,"expression":"94 − 58","category":"sub2"},{"id":512,"expression":"89 − 69","category":"sub2"},{"id":513,"expression":"55 − 14","category":"sub2"},{"id":514,"expression":"70 − 36","category":"sub2"},{"id":515,"expression":"36 − 29","category":"sub2"},{"id":516,"expression":"31 − 30","category":"sub2"},{"id":517,"expression":"66 − 39","category":"sub2"},{"id":518,"expression":"76 − 66","category":"sub2"},{"id":519,"expression":"81 − 46","category":"sub2"},{"id":520,"expression":"72 − 41","category":"sub2"},{"id":521,"expression":"53 − 45","category":"sub2"},{"id":522,"expression":"80 − 53","category":"sub2"},{"id":523,"expression":"45 − 10","category":"sub2"},{"id":524,"expression":"68 − 63","category":"sub2"},{"id":525,"expression":"49 − 37","category":"sub2"},{"id":526,"expression":"93 − 71","category":"sub2"},{"id":527,"expression":"54 − 26","category":"sub2"},{"id":528,"expression":"91 − 54","category":"sub2"},{"id":529,"expression":"85 − 71","category":"sub2"},{"id":530,"expression":"47 − 34","category":"sub2"},{"id":531,"expression":"62 − 29","category":"sub2"},{"id":532,"expression":"96 − 61","category":"sub2"},{"id":533,"expression":"98 − 86","category":"sub2"},{"id":534,"expression":"85 − 63","category":"sub2"},{"id":535,"expression":"54 − 51","category":"sub2"},{"id":536,"expression":"88 − 77","category":"sub2"},{"id":537,"expression":"87 − 78","category":"sub2"},{"id":538,"expression":"58 − 39","category":"sub2"},{"id":539,"expression":"52 − 15","category":"sub2"},{"id":540,"expression":"30 − 10","category":"sub2"},{"id":541,"expression":"69 − 53","category":"sub2"},{"id":542,"expression":"64 − 61","category":"sub2"},{"id":543,"expression":"65 − 25","category":"sub2"},{"id":544,"expression":"63 − 38","category":"sub2"},{"id":545,"expression":"99 − 10","category":"sub2"},{"id":546,"expression":"54 − 24","category":"sub2"},{"id":547,"expression":"89 − 43","category":"sub2"},{"id":548,"expression":"63 − 47","category":"sub2"},{"id":549,"expression":"96 − 46","category":"sub2"},{"id":550,"expression":"98 − 50","category":"sub2"},{"id":551,"expression":"65 − 58","category":"sub2"},{"id":552,"expression":"71 − 65","category":"sub2"},{"id":553,"expression":"97 − 60","category":"sub2"},{"id":554,"expression":"72 − 44","category":"sub2"},{"id":555,"expression":"37 − 18","category":"sub2"},{"id":556,"expression":"81 − 18","category":"sub2"},{"id":557,"expression":"96 − 53","category":"sub2"},{"id":558,"expression":"88 − 46","category":"sub2"},{"id":559,"expression":"84 − 35","category":"sub2"},{"id":560,"expression":"37 − 31","category":"sub2"},{"id":561,"expression":"62 − 41","category":"sub2"},{"id":562,"expression":"77 − 48","category":"sub2"},{"id":563,"expression":"93 − 65","category":"sub2"},{"id":564,"expression":"85 − 67","category":"sub2"},{"id":565,"expression":"67 − 38","category":"sub2"},{"id":566,"expression":"91 − 74","category":"sub2"},{"id":567,"expression":"40 − 39","category":"sub2"},{"id":568,"expression":"53 − 50","category":"sub2"},{"id":569,"expression":"64 − 51","category":"sub2"},{"id":570,"expression":"72 − 70","category":"sub2"},{"id":571,"expression":"93 − 51","category":"sub2"},{"id":572,"expression":"93 − 52","category":"sub2"},{"id":573,"expression":"74 − 30","category":"sub2"},{"id":574,"expression":"99 − 58","category":"sub2"},{"id":575,"expression":"97 − 78","category":"sub2"},{"id":576,"expression":"95 − 93","category":"sub2"},{"id":577,"expression":"58 − 51","category":"sub2"},{"id":578,"expression":"85 − 72","category":"sub2"},{"id":579,"expression":"76 − 69","category":"sub2"},{"id":580,"expression":"92 − 78","category":"sub2"},{"id":581,"expression":"99 − 65","category":"sub2"},{"id":582,"expression":"83 − 79","category":"sub2"},{"id":583,"expression":"56 − 50","category":"sub2"},{"id":584,"expression":"91 − 57","category":"sub2"},{"id":585,"expression":"93 − 75","category":"sub2"},{"id":586,"expression":"88 − 59","category":"sub2"},{"id":587,"expression":"79 − 42","category":"sub2"},{"id":588,"expression":"84 − 73","category":"sub2"},{"id":589,"expression":"76 − 28","category":"sub2"},{"id":590,"expression":"82 − 32","category":"sub2"},{"id":591,"expression":"70 − 49","category":"sub2"},{"id":592,"expression":"97 − 70","category":"sub2"},{"id":593,"expression":"96 − 68","category":"sub2"},{"id":594,"expression":"70 − 45","category":"sub2"},{"id":595,"expression":"73 − 45","category":"sub2"},{"id":596,"expression":"96 − 87","category":"sub2"},{"id":597,"expression":"99 − 68","category":"sub2"},{"id":598,"expression":"99 − 90","category":"sub2"},{"id":599,"expression":"93 − 90","category":"sub2"},{"id":600,"expression":"73 − 63","category":"sub2"},{"id":601,"expression":"913 − 407","category":"sub3"},{"id":602,"expression":"707 − 289","category":"sub3"},{"id":603,"expression":"957 − 801","category":"sub3"},{"id":604,"expression":"762 − 731","category":"sub3"},{"id":605,"expression":"561 − 506","category":"sub3"},{"id":606,"expression":"972 − 318","category":"sub3"},{"id":607,"expression":"650 − 472","category":"sub3"},{"id":608,"expression":"629 − 610","category":"sub3"},{"id":609,"expression":"989 − 189","category":"sub3"},{"id":610,"expression":"907 − 827","category":"sub3"},{"id":611,"expression":"910 − 208","category":"sub3"},{"id":612,"expression":"757 − 736","category":"sub3"},{"id":613,"expression":"530 − 364","category":"sub3"},{"id":614,"expression":"899 − 726","category":"sub3"},{"id":615,"expression":"822 − 611","category":"sub3"},{"id":616,"expression":"807 − 476","category":"sub3"},{"id":617,"expression":"707 − 229","category":"sub3"},{"id":618,"expression":"923 − 222","category":"sub3"},{"id":619,"expression":"946 − 425","category":"sub3"},{"id":620,"expression":"765 − 330","category":"sub3"},{"id":621,"expression":"860 − 297","category":"sub3"},{"id":622,"expression":"962 − 129","category":"sub3"},{"id":623,"expression":"913 − 723","category":"sub3"},{"id":624,"expression":"796 − 174","category":"sub3"},{"id":625,"expression":"891 − 805","category":"sub3"},{"id":626,"expression":"889 − 480","category":"sub3"},{"id":627,"expression":"782 − 334","category":"sub3"},{"id":628,"expression":"937 − 116","category":"sub3"},{"id":629,"expression":"832 − 226","category":"sub3"},{"id":630,"expression":"966 − 325","category":"sub3"},{"id":631,"expression":"876 − 202","category":"sub3"},{"id":632,"expression":"696 − 452","category":"sub3"},{"id":633,"expression":"991 − 867","category":"sub3"},{"id":634,"expression":"987 − 245","category":"sub3"},{"id":635,"expression":"907 − 726","category":"sub3"},{"id":636,"expression":"943 − 508","category":"sub3"},{"id":637,"expression":"956 − 248","category":"sub3"},{"id":638,"expression":"905 − 107","category":"sub3"},{"id":639,"expression":"961 − 263","category":"sub3"},{"id":640,"expression":"651 − 606","category":"sub3"},{"id":641,"expression":"884 − 658","category":"sub3"},{"id":642,"expression":"987 − 206","category":"sub3"},{"id":643,"expression":"877 − 265","category":"sub3"},{"id":644,"expression":"992 − 806","category":"sub3"},{"id":645,"expression":"941 − 699","category":"sub3"},{"id":646,"expression":"953 − 302","category":"sub3"},{"id":647,"expression":"814 − 574","category":"sub3"},{"id":648,"expression":"958 − 692","category":"sub3"},{"id":649,"expression":"966 − 410","category":"sub3"},{"id":650,"expression":"954 − 405","category":"sub3"},{"id":651,"expression":"972 − 573","category":"sub3"},{"id":652,"expression":"999 − 624","category":"sub3"},{"id":653,"expression":"973 − 723","category":"sub3"},{"id":654,"expression":"875 − 564","category":"sub3"},{"id":655,"expression":"799 − 351","category":"sub3"},{"id":656,"expression":"931 − 779","category":"sub3"},{"id":657,"expression":"745 − 698","category":"sub3"},{"id":658,"expression":"913 − 165","category":"sub3"},{"id":659,"expression":"980 − 446","category":"sub3"},{"id":660,"expression":"917 − 119","category":"sub3"},{"id":661,"expression":"995 − 444","category":"sub3"},{"id":662,"expression":"991 − 477","category":"sub3"},{"id":663,"expression":"763 − 306","category":"sub3"},{"id":664,"expression":"842 − 751","category":"sub3"},{"id":665,"expression":"965 − 494","category":"sub3"},{"id":666,"expression":"897 − 275","category":"sub3"},{"id":667,"expression":"917 − 422","category":"sub3"},{"id":668,"expression":"990 − 277","category":"sub3"},{"id":669,"expression":"938 − 516","category":"sub3"},{"id":670,"expression":"906 − 597","category":"sub3"},{"id":671,"expression":"951 − 734","category":"sub3"},{"id":672,"expression":"939 − 801","category":"sub3"},{"id":673,"expression":"871 − 237","category":"sub3"},{"id":674,"expression":"925 − 171","category":"sub3"},{"id":675,"expression":"987 − 604","category":"sub3"},{"id":676,"expression":"784 − 365","category":"sub3"},{"id":677,"expression":"999 − 177","category":"sub3"},{"id":678,"expression":"917 − 519","category":"sub3"},{"id":679,"expression":"983 − 738","category":"sub3"},{"id":680,"expression":"954 − 407","category":"sub3"},{"id":681,"expression":"995 − 427","category":"sub3"},{"id":682,"expression":"925 − 101","category":"sub3"},{"id":683,"expression":"743 − 356","category":"sub3"},{"id":684,"expression":"951 − 312","category":"sub3"},{"id":685,"expression":"995 − 563","category":"sub3"},{"id":686,"expression":"990 − 711","category":"sub3"},{"id":687,"expression":"883 − 600","category":"sub3"},{"id":688,"expression":"907 − 532","category":"sub3"},{"id":689,"expression":"987 − 817","category":"sub3"},{"id":690,"expression":"983 − 794","category":"sub3"},{"id":691,"expression":"920 − 432","category":"sub3"},{"id":692,"expression":"915 − 611","category":"sub3"},{"id":693,"expression":"870 − 215","category":"sub3"},{"id":694,"expression":"974 − 220","category":"sub3"},{"id":695,"expression":"925 − 434","category":"sub3"},{"id":696,"expression":"957 − 750","category":"sub3"},{"id":697,"expression":"997 − 826","category":"sub3"},{"id":698,"expression":"981 − 723","category":"sub3"},{"id":699,"expression":"988 − 655","category":"sub3"},{"id":700,"expression":"996 − 756","category":"sub3"},{"id":701,"expression":"9313 − 3434","category":"sub4"},{"id":702,"expression":"8902 − 5809","category":"sub4"},{"id":703,"expression":"9075 − 2053","category":"sub4"},{"id":704,"expression":"9981 − 7006","category":"sub4"},{"id":705,"expression":"9908 − 4928","category":"sub4"},{"id":706,"expression":"8190 − 5465","category":"sub4"},{"id":707,"expression":"9874 − 7016","category":"sub4"},{"id":708,"expression":"9152 − 2284","category":"sub4"},{"id":709,"expression":"8570 − 8072","category":"sub4"},{"id":710,"expression":"9998 − 4924","category":"sub4"},{"id":711,"expression":"9144 − 3708","category":"sub4"},{"id":712,"expression":"9939 − 7047","category":"sub4"},{"id":713,"expression":"9322 − 7058","category":"sub4"},{"id":714,"expression":"9452 − 8803","category":"sub4"},{"id":715,"expression":"9974 − 3099","category":"sub4"},{"id":716,"expression":"9857 − 3888","category":"sub4"},{"id":717,"expression":"9636 − 9322","category":"sub4"},{"id":718,"expression":"9983 − 4343","category":"sub4"},{"id":719,"expression":"9690 − 4344","category":"sub4"},{"id":720,"expression":"9939 − 3585","category":"sub4"},{"id":721,"expression":"9333 − 2188","category":"sub4"},{"id":722,"expression":"8963 − 1415","category":"sub4"},{"id":723,"expression":"9915 − 9400","category":"sub4"},{"id":724,"expression":"9873 − 1621","category":"sub4"},{"id":725,"expression":"9220 − 1978","category":"sub4"},{"id":726,"expression":"9600 − 4155","category":"sub4"},{"id":727,"expression":"9845 − 7398","category":"sub4"},{"id":728,"expression":"9768 − 4415","category":"sub4"},{"id":729,"expression":"9922 − 1106","category":"sub4"},{"id":730,"expression":"9893 − 6638","category":"sub4"},{"id":731,"expression":"9591 − 5401","category":"sub4"},{"id":732,"expression":"9887 − 6428","category":"sub4"},{"id":733,"expression":"9729 − 6538","category":"sub4"},{"id":734,"expression":"9959 − 3338","category":"sub4"},{"id":735,"expression":"9416 − 3294","category":"sub4"},{"id":736,"expression":"9901 − 9040","category":"sub4"},{"id":737,"expression":"9920 − 4327","category":"sub4"},{"id":738,"expression":"9354 − 8048","category":"sub4"},{"id":739,"expression":"9174 − 6420","category":"sub4"},{"id":740,"expression":"9511 − 5738","category":"sub4"},{"id":741,"expression":"9969 − 6719","category":"sub4"},{"id":742,"expression":"9002 − 6104","category":"sub4"},{"id":743,"expression":"9721 − 8145","category":"sub4"},{"id":744,"expression":"9634 − 6349","category":"sub4"},{"id":745,"expression":"9787 − 2574","category":"sub4"},{"id":746,"expression":"9659 − 9224","category":"sub4"},{"id":747,"expression":"9026 − 6287","category":"sub4"},{"id":748,"expression":"9932 − 8358","category":"sub4"},{"id":749,"expression":"9651 − 4672","category":"sub4"},{"id":750,"expression":"9970 − 6405","category":"sub4"},{"id":751,"expression":"15 − 29 − 33","category":"mix2"},{"id":752,"expression":"31 + 93 − 43","category":"mix2"},{"id":753,"expression":"74 − 61 + 13","category":"mix2"},{"id":754,"expression":"93 − 84 − 68","category":"mix2"},{"id":755,"expression":"98 − 67 + 55","category":"mix2"},{"id":756,"expression":"58 − 30 − 82","category":"mix2"},{"id":757,"expression":"34 − 18 − 17","category":"mix2"},{"id":758,"expression":"45 − 76 + 61","category":"mix2"},{"id":759,"expression":"86 − 31 + 50","category":"mix2"},{"id":760,"expression":"81 − 71 + 94","category":"mix2"},{"id":761,"expression":"45 + 97 − 16","category":"mix2"},{"id":762,"expression":"21 + 41 − 86","category":"mix2"},{"id":763,"expression":"29 − 95 + 99","category":"mix2"},{"id":764,"expression":"85 − 47 − 16","category":"mix2"},{"id":765,"expression":"87 − 69 − 67","category":"mix2"},{"id":766,"expression":"94 − 78 + 41","category":"mix2"},{"id":767,"expression":"74 + 94 − 13","category":"mix2"},{"id":768,"expression":"13 − 61 + 33","category":"mix2"},{"id":769,"expression":"25 + 99 − 78","category":"mix2"},{"id":770,"expression":"81 − 42 + 45","category":"mix2"},{"id":771,"expression":"98 + 84 − 90","category":"mix2"},{"id":772,"expression":"59 + 39 − 83","category":"mix2"},{"id":773,"expression":"50 − 66 + 98","category":"mix2"},{"id":774,"expression":"64 − 97 + 55","category":"mix2"},{"id":775,"expression":"87 + 62 − 48","category":"mix2"},{"id":776,"expression":"89 − 28 + 57","category":"mix2"},{"id":777,"expression":"37 − 56 + 88","category":"mix2"},{"id":778,"expression":"95 − 34 − 58","category":"mix2"},{"id":779,"expression":"90 + 82 − 81","category":"mix2"},{"id":780,"expression":"86 + 72 − 90","category":"mix2"},{"id":781,"expression":"78 + 68 − 28","category":"mix2"},{"id":782,"expression":"93 − 80 − 19","category":"mix2"},{"id":783,"expression":"77 + 70 − 39","category":"mix2"},{"id":784,"expression":"92 − 40 − 13","category":"mix2"},{"id":785,"expression":"38 − 87 + 91","category":"mix2"},{"id":786,"expression":"91 + 75 − 95","category":"mix2"},{"id":787,"expression":"33 − 86 + 83","category":"mix2"},{"id":788,"expression":"74 − 40 − 82","category":"mix2"},{"id":789,"expression":"96 − 74 + 59","category":"mix2"},{"id":790,"expression":"38 + 38 − 93","category":"mix2"},{"id":791,"expression":"89 − 94 + 77","category":"mix2"},{"id":792,"expression":"53 − 30 + 11","category":"mix2"},{"id":793,"expression":"83 + 41 − 98","category":"mix2"},{"id":794,"expression":"97 + 73 − 23","category":"mix2"},{"id":795,"expression":"71 + 44 − 80","category":"mix2"},{"id":796,"expression":"57 − 27 − 70","category":"mix2"},{"id":797,"expression":"66 + 61 − 45","category":"mix2"},{"id":798,"expression":"86 − 94 + 75","category":"mix2"},{"id":799,"expression":"53 − 42 − 48","category":"mix2"},{"id":800,"expression":"87 − 72 − 50","category":"mix2"},{"id":801,"expression":"762 − 923 + 950","category":"mix3"},{"id":802,"expression":"881 − 150 − 494","category":"mix3"},{"id":803,"expression":"632 − 469 − 693","category":"mix3"},{"id":804,"expression":"904 − 894 + 681","category":"mix3"},{"id":805,"expression":"187 − 521 + 927","category":"mix3"},{"id":806,"expression":"686 + 722 − 871","category":"mix3"},{"id":807,"expression":"559 − 451 − 642","category":"mix3"},{"id":808,"expression":"704 + 243 − 632","category":"mix3"},{"id":809,"expression":"211 + 558 − 858","category":"mix3"},{"id":810,"expression":"573 − 520 + 149","category":"mix3"},{"id":811,"expression":"641 + 942 − 913","category":"mix3"},{"id":812,"expression":"257 − 510 − 203","category":"mix3"},{"id":813,"expression":"531 − 531 + 858","category":"mix3"},{"id":814,"expression":"797 − 585 + 543","category":"mix3"},{"id":815,"expression":"346 − 206 + 743","category":"mix3"},{"id":816,"expression":"844 + 518 − 794","category":"mix3"},{"id":817,"expression":"475 − 701 + 867","category":"mix3"},{"id":818,"expression":"888 − 704 − 559","category":"mix3"},{"id":819,"expression":"854 − 334 − 760","category":"mix3"},{"id":820,"expression":"553 + 835 − 381","category":"mix3"},{"id":821,"expression":"515 − 512 + 247","category":"mix3"},{"id":822,"expression":"725 + 991 − 739","category":"mix3"},{"id":823,"expression":"367 + 493 − 595","category":"mix3"},{"id":824,"expression":"603 + 758 − 808","category":"mix3"},{"id":825,"expression":"696 − 978 + 750","category":"mix3"},{"id":826,"expression":"820 − 316 + 683","category":"mix3"},{"id":827,"expression":"653 + 891 − 452","category":"mix3"},{"id":828,"expression":"427 − 973 + 766","category":"mix3"},{"id":829,"expression":"566 + 676 − 381","category":"mix3"},{"id":830,"expression":"406 + 604 − 333","category":"mix3"},{"id":831,"expression":"580 + 430 − 640","category":"mix3"},{"id":832,"expression":"769 − 665 + 594","category":"mix3"},{"id":833,"expression":"999 − 862 + 605","category":"mix3"},{"id":834,"expression":"919 − 382 + 767","category":"mix3"},{"id":835,"expression":"890 − 667 − 459","category":"mix3"},{"id":836,"expression":"672 − 365 − 658","category":"mix3"},{"id":837,"expression":"628 − 951 + 877","category":"mix3"},{"id":838,"expression":"751 − 644 + 854","category":"mix3"},{"id":839,"expression":"636 − 768 + 947","category":"mix3"},{"id":840,"expression":"869 + 917 − 603","category":"mix3"},{"id":841,"expression":"865 − 794 − 292","category":"mix3"},{"id":842,"expression":"937 − 959 + 753","category":"mix3"},{"id":843,"expression":"965 + 296 − 756","category":"mix3"},{"id":844,"expression":"820 − 929 + 883","category":"mix3"},{"id":845,"expression":"780 + 816 − 498","category":"mix3"},{"id":846,"expression":"561 + 824 − 593","category":"mix3"},{"id":847,"expression":"494 − 332 + 809","category":"mix3"},{"id":848,"expression":"563 − 739 + 943","category":"mix3"},{"id":849,"expression":"651 − 724 − 648","category":"mix3"},{"id":850,"expression":"799 − 224 − 588","category":"mix3"},{"id":851,"expression":"87 + 78","category":"ab_plus_ba"},{"id":852,"expression":"48 + 84","category":"ab_plus_ba"},{"id":853,"expression":"28 + 82","category":"ab_plus_ba"},{"id":854,"expression":"69 + 96","category":"ab_plus_ba"},{"id":855,"expression":"21 + 12","category":"ab_plus_ba"},{"id":856,"expression":"18 + 81","category":"ab_plus_ba"},{"id":857,"expression":"38 + 83","category":"ab_plus_ba"},{"id":858,"expression":"83 + 38","category":"ab_plus_ba"},{"id":859,"expression":"45 + 54","category":"ab_plus_ba"},{"id":860,"expression":"52 + 25","category":"ab_plus_ba"},{"id":861,"expression":"94 + 49","category":"ab_plus_ba"},{"id":862,"expression":"97 + 79","category":"ab_plus_ba"},{"id":863,"expression":"59 + 95","category":"ab_plus_ba"},{"id":864,"expression":"12 + 21","category":"ab_plus_ba"},{"id":865,"expression":"61 + 16","category":"ab_plus_ba"},{"id":866,"expression":"67 + 76","category":"ab_plus_ba"},{"id":867,"expression":"49 + 94","category":"ab_plus_ba"},{"id":868,"expression":"16 + 61","category":"ab_plus_ba"},{"id":869,"expression":"35 + 53","category":"ab_plus_ba"},{"id":870,"expression":"96 + 69","category":"ab_plus_ba"},{"id":871,"expression":"85 + 58","category":"ab_plus_ba"},{"id":872,"expression":"15 + 51","category":"ab_plus_ba"},{"id":873,"expression":"42 + 24","category":"ab_plus_ba"},{"id":874,"expression":"78 + 87","category":"ab_plus_ba"},{"id":875,"expression":"74 + 47","category":"ab_plus_ba"},{"id":876,"expression":"31 + 13","category":"ab_plus_ba"},{"id":877,"expression":"46 + 64","category":"ab_plus_ba"},{"id":878,"expression":"84 + 48","category":"ab_plus_ba"},{"id":879,"expression":"76 + 67","category":"ab_plus_ba"},{"id":880,"expression":"75 + 57","category":"ab_plus_ba"},{"id":881,"expression":"26 + 62","category":"ab_plus_ba"},{"id":882,"expression":"14 + 41","category":"ab_plus_ba"},{"id":883,"expression":"62 + 26","category":"ab_plus_ba"},{"id":884,"expression":"58 + 85","category":"ab_plus_ba"},{"id":885,"expression":"81 + 18","category":"ab_plus_ba"},{"id":886,"expression":"24 + 42","category":"ab_plus_ba"},{"id":887,"expression":"79 + 97","category":"ab_plus_ba"},{"id":888,"expression":"64 + 46","category":"ab_plus_ba"},{"id":889,"expression":"57 + 75","category":"ab_plus_ba"},{"id":890,"expression":"54 + 45","category":"ab_plus_ba"},{"id":891,"expression":"95 + 59","category":"ab_plus_ba"},{"id":892,"expression":"47 + 74","category":"ab_plus_ba"},{"id":893,"expression":"13 + 31","category":"ab_plus_ba"},{"id":894,"expression":"25 + 52","category":"ab_plus_ba"},{"id":895,"expression":"41 + 14","category":"ab_plus_ba"},{"id":896,"expression":"53 + 35","category":"ab_plus_ba"},{"id":897,"expression":"92 + 29","category":"ab_plus_ba"},{"id":898,"expression":"29 + 92","category":"ab_plus_ba"},{"id":899,"expression":"32 + 23","category":"ab_plus_ba"},{"id":900,"expression":"23 + 32","category":"ab_plus_ba"},{"id":901,"expression":"97 − 79","category":"ab_minus_ba"},{"id":902,"expression":"83 − 38","category":"ab_minus_ba"},{"id":903,"expression":"59 − 95","category":"ab_minus_ba"},{"id":904,"expression":"86 − 68","category":"ab_minus_ba"},{"id":905,"expression":"21 − 12","category":"ab_minus_ba"},{"id":906,"expression":"12 − 21","category":"ab_minus_ba"},{"id":907,"expression":"67 − 76","category":"ab_minus_ba"},{"id":908,"expression":"34 − 43","category":"ab_minus_ba"},{"id":909,"expression":"49 − 94","category":"ab_minus_ba"},{"id":910,"expression":"61 − 16","category":"ab_minus_ba"},{"id":911,"expression":"15 − 51","category":"ab_minus_ba"},{"id":912,"expression":"35 − 53","category":"ab_minus_ba"},{"id":913,"expression":"84 − 48","category":"ab_minus_ba"},{"id":914,"expression":"32 − 23","category":"ab_minus_ba"},{"id":915,"expression":"23 − 32","category":"ab_minus_ba"},{"id":916,"expression":"58 − 85","category":"ab_minus_ba"},{"id":917,"expression":"72 − 27","category":"ab_minus_ba"},{"id":918,"expression":"24 − 42","category":"ab_minus_ba"},{"id":919,"expression":"38 − 83","category":"ab_minus_ba"},{"id":920,"expression":"96 − 69","category":"ab_minus_ba"},{"id":921,"expression":"75 − 57","category":"ab_minus_ba"},{"id":922,"expression":"46 − 64","category":"ab_minus_ba"},{"id":923,"expression":"95 − 59","category":"ab_minus_ba"},{"id":924,"expression":"14 − 41","category":"ab_minus_ba"},{"id":925,"expression":"92 − 29","category":"ab_minus_ba"},{"id":926,"expression":"29 − 92","category":"ab_minus_ba"},{"id":927,"expression":"74 − 47","category":"ab_minus_ba"},{"id":928,"expression":"48 − 84","category":"ab_minus_ba"},{"id":929,"expression":"41 − 14","category":"ab_minus_ba"},{"id":930,"expression":"42 − 24","category":"ab_minus_ba"},{"id":931,"expression":"26 − 62","category":"ab_minus_ba"},{"id":932,"expression":"62 − 26","category":"ab_minus_ba"},{"id":933,"expression":"52 − 25","category":"ab_minus_ba"},{"id":934,"expression":"25 − 52","category":"ab_minus_ba"},{"id":935,"expression":"87 − 78","category":"ab_minus_ba"},{"id":936,"expression":"78 − 87","category":"ab_minus_ba"},{"id":937,"expression":"54 − 45","category":"ab_minus_ba"},{"id":938,"expression":"13 − 31","category":"ab_minus_ba"},{"id":939,"expression":"31 − 13","category":"ab_minus_ba"},{"id":940,"expression":"16 − 61","category":"ab_minus_ba"},{"id":941,"expression":"64 − 46","category":"ab_minus_ba"},{"id":942,"expression":"47 − 74","category":"ab_minus_ba"},{"id":943,"expression":"57 − 75","category":"ab_minus_ba"},{"id":944,"expression":"45 − 54","category":"ab_minus_ba"},{"id":945,"expression":"85 − 58","category":"ab_minus_ba"},{"id":946,"expression":"53 − 35","category":"ab_minus_ba"},{"id":947,"expression":"69 − 96","category":"ab_minus_ba"},{"id":948,"expression":"18 − 81","category":"ab_minus_ba"},{"id":949,"expression":"76 − 67","category":"ab_minus_ba"},{"id":950,"expression":"94 − 49","category":"ab_minus_ba"},{"id":951,"expression":"80.9 + 8922.2","category":"decimal_add"},{"id":952,"expression":"76 + 19.3","category":"decimal_add"},{"id":953,"expression":"98.7 + 95.8","category":"decimal_add"},{"id":954,"expression":"796.6 + 1604","category":"decimal_add"},{"id":955,"expression":"36.7 + 75.1","category":"decimal_add"},{"id":956,"expression":"6321.6 + 9632","category":"decimal_add"},{"id":957,"expression":"177.2 + 154.4","category":"decimal_add"},{"id":958,"expression":"21.2 + 398.6","category":"decimal_add"},{"id":959,"expression":"13.5 + 95.9","category":"decimal_add"},{"id":960,"expression":"29.8 + 77","category":"decimal_add"},{"id":961,"expression":"717.9 + 498.1","category":"decimal_add"},{"id":962,"expression":"176.5 + 65.7","category":"decimal_add"},{"id":963,"expression":"809.2 + 984.4","category":"decimal_add"},{"id":964,"expression":"2405 + 89.2","category":"decimal_add"},{"id":965,"expression":"8059 + 24.2","category":"decimal_add"},{"id":966,"expression":"8300.4 + 85","category":"decimal_add"},{"id":967,"expression":"65.8 + 8521.4","category":"decimal_add"},{"id":968,"expression":"46.2 + 85","category":"decimal_add"},{"id":969,"expression":"9211 + 56.5","category":"decimal_add"},{"id":970,"expression":"70.2 + 91.8","category":"decimal_add"},{"id":971,"expression":"698.7 + 353.6","category":"decimal_add"},{"id":972,"expression":"900.8 + 72.6","category":"decimal_add"},{"id":973,"expression":"213.9 + 719.8","category":"decimal_add"},{"id":974,"expression":"555.4 + 57","category":"decimal_add"},{"id":975,"expression":"2333.4 + 9482","category":"decimal_add"},{"id":976,"expression":"71.1 + 69.5","category":"decimal_add"},{"id":977,"expression":"101.4 + 708.1","category":"decimal_add"},{"id":978,"expression":"39.5 + 14","category":"decimal_add"},{"id":979,"expression":"257.8 + 482.9","category":"decimal_add"},{"id":980,"expression":"6621.8 + 6901","category":"decimal_add"},{"id":981,"expression":"27 + 56.3","category":"decimal_add"},{"id":982,"expression":"255.1 + 85","category":"decimal_add"},{"id":983,"expression":"764.9 + 217.5","category":"decimal_add"},{"id":984,"expression":"9588 + 91.5","category":"decimal_add"},{"id":985,"expression":"195.7 + 901.6","category":"decimal_add"},{"id":986,"expression":"92 + 19.6","category":"decimal_add"},{"id":987,"expression":"36 + 73.5","category":"decimal_add"},{"id":988,"expression":"849.4 + 784.7","category":"decimal_add"},{"id":989,"expression":"593.7 + 236.1","category":"decimal_add"},{"id":990,"expression":"35.9 + 86","category":"decimal_add"},{"id":991,"expression":"92.8 + 375.4","category":"decimal_add"},{"id":992,"expression":"49.2 + 72.7","category":"decimal_add"},{"id":993,"expression":"423.8 + 28.4","category":"decimal_add"},{"id":994,"expression":"584.7 + 53","category":"decimal_add"},{"id":995,"expression":"63.5 + 941.8","category":"decimal_add"},{"id":996,"expression":"716.3 + 198.7","category":"decimal_add"},{"id":997,"expression":"66.7 + 22","category":"decimal_add"},{"id":998,"expression":"854.6 + 27.5","category":"decimal_add"},{"id":999,"expression":"994.7 + 682.5","category":"decimal_add"},{"id":1000,"expression":"79.4 + 954.7","category":"decimal_add"},{"id":1001,"expression":"63.2 − 16","category":"decimal_sub"},{"id":1002,"expression":"34.2 − 29.2","category":"decimal_sub"},{"id":1003,"expression":"4834 − 68.1","category":"decimal_sub"},{"id":1004,"expression":"745.5 − 59","category":"decimal_sub"},{"id":1005,"expression":"6965.1 − 56","category":"decimal_sub"},{"id":1006,"expression":"81.8 − 77.2","category":"decimal_sub"},{"id":1007,"expression":"588.7 − 79.4","category":"decimal_sub"},{"id":1008,"expression":"532.3 − 16.4","category":"decimal_sub"},{"id":1009,"expression":"99.6 − 52","category":"decimal_sub"},{"id":1010,"expression":"977.5 − 19.6","category":"decimal_sub"},{"id":1011,"expression":"7002.4 − 64","category":"decimal_sub"},{"id":1012,"expression":"97.6 − 40","category":"decimal_sub"},{"id":1013,"expression":"98 − 53.4","category":"decimal_sub"},{"id":1014,"expression":"9306 − 31.7","category":"decimal_sub"},{"id":1015,"expression":"560.8 − 20","category":"decimal_sub"},{"id":1016,"expression":"345.7 − 199.3","category":"decimal_sub"},{"id":1017,"expression":"961.6 − 62.5","category":"decimal_sub"},{"id":1018,"expression":"363.8 − 277.6","category":"decimal_sub"},{"id":1019,"expression":"516.3 − 94","category":"decimal_sub"},{"id":1020,"expression":"81.9 − 46.7","category":"decimal_sub"},{"id":1021,"expression":"9940 − 49.8","category":"decimal_sub"},{"id":1022,"expression":"52.9 − 32","category":"decimal_sub"},{"id":1023,"expression":"625.4 − 98.1","category":"decimal_sub"},{"id":1024,"expression":"646.9 − 407","category":"decimal_sub"},{"id":1025,"expression":"86.2 − 73.1","category":"decimal_sub"},{"id":1026,"expression":"9545 − 73.6","category":"decimal_sub"},{"id":1027,"expression":"71.5 − 65","category":"decimal_sub"},{"id":1028,"expression":"427.1 − 89","category":"decimal_sub"},{"id":1029,"expression":"823.2 − 710.6","category":"decimal_sub"},{"id":1030,"expression":"775.9 − 288.4","category":"decimal_sub"},{"id":1031,"expression":"90.3 − 62.8","category":"decimal_sub"},{"id":1032,"expression":"987.1 − 25.6","category":"decimal_sub"},{"id":1033,"expression":"462.4 − 75","category":"decimal_sub"},{"id":1034,"expression":"76.3 − 63.1","category":"decimal_sub"},{"id":1035,"expression":"557.5 − 119.6","category":"decimal_sub"},{"id":1036,"expression":"7009.2 − 69","category":"decimal_sub"},{"id":1037,"expression":"734.8 − 681.9","category":"decimal_sub"},{"id":1038,"expression":"912.7 − 65.4","category":"decimal_sub"},{"id":1039,"expression":"54.2 − 16","category":"decimal_sub"},{"id":1040,"expression":"98.4 − 11","category":"decimal_sub"},{"id":1041,"expression":"845.2 − 785.9","category":"decimal_sub"},{"id":1042,"expression":"903.7 − 682.1","category":"decimal_sub"},{"id":1043,"expression":"74.6 − 14.8","category":"decimal_sub"},{"id":1044,"expression":"9116 − 92.7","category":"decimal_sub"},{"id":1045,"expression":"824.9 − 642.1","category":"decimal_sub"},{"id":1046,"expression":"372.9 − 95.7","category":"decimal_sub"},{"id":1047,"expression":"238.4 − 77","category":"decimal_sub"},{"id":1048,"expression":"7203 − 92.4","category":"decimal_sub"},{"id":1049,"expression":"54.4 − 14","category":"decimal_sub"},{"id":1050,"expression":"97.8 − 83.2","category":"decimal_sub"}];
+const CATEGORIES = [{"id":"add2","name":"Addition • 2 Digits","from":1,"to":100},{"id":"add3","name":"Addition • 3 Digits","from":101,"to":200},{"id":"add4","name":"Addition • 4 Digits","from":201,"to":250},{"id":"add3_2","name":"Addition • 3 Numbers • 2 Digits","from":251,"to":350},{"id":"add3_3","name":"Addition • 3 Numbers • 3 Digits","from":351,"to":450},{"id":"add3_4","name":"Addition • 3 Numbers • 4 Digits","from":451,"to":500},{"id":"sub2","name":"Subtraction • 2 Digits","from":501,"to":600},{"id":"sub3","name":"Subtraction • 3 Digits","from":601,"to":700},{"id":"sub4","name":"Subtraction • 4 Digits","from":701,"to":750},{"id":"mix2","name":"Addition & Subtraction • 2 Digits","from":751,"to":800},{"id":"mix3","name":"Addition & Subtraction • 3 Digits","from":801,"to":850},{"id":"ab_plus_ba","name":"Numbers based on ab + ba","from":851,"to":900},{"id":"ab_minus_ba","name":"Numbers based on ab − ba","from":901,"to":950},{"id":"decimal_add","name":"Decimal Addition","from":951,"to":1000},{"id":"decimal_sub","name":"Decimal Subtraction","from":1001,"to":1050}];
+
+const state = {
+  selectedCategory:"all",sessionQuestions:[],current:0,timeLimit:10,
+  timerId:null,advanceTimerId:null,startedAt:0,locked:false,solved:0,timeout:0,solveTimes:[]
+};
+
+const $ = id => document.getElementById(id);
+
+function getCategory(id){return CATEGORIES.find(c=>c.id===id)}
+function categoryQuestions(id){
+  if(id==="all") return QUESTIONS.slice();
+  const c=getCategory(id);
+  return QUESTIONS.filter(q=>q.id>=c.from && q.id<=c.to);
+}
+
+function renderCategories(){
+  const list=$("categoryList"); list.innerHTML="";
+  const all=document.createElement("button");
+  all.className="category "+(state.selectedCategory==="all"?"active":"");
+  all.innerHTML='<div class="row"><span>All Questions</span><span class="count">1050</span></div><div class="range">Q1–Q1050</div>';
+  all.onclick=()=>selectCategory("all"); list.appendChild(all);
+
+  CATEGORIES.forEach(c=>{
+    const b=document.createElement("button");
+    b.className="category "+(state.selectedCategory===c.id?"active":"");
+    b.innerHTML=`<div class="row"><span>${c.name}</span><span class="count">${c.to-c.from+1}</span></div><div class="range">Q${c.from}–Q${c.to}</div>`;
+    b.onclick=()=>selectCategory(c.id); list.appendChild(b);
+  });
+}
+
+function renderPracticeCards(){
+  const grid=$("practiceGrid"); grid.innerHTML="";
+  const all={id:"all",name:"All 1,050 Questions",from:1,to:1050};
+  [all,...CATEGORIES].forEach(c=>{
+    const b=document.createElement("button");
+    b.className="practice-card";
+    b.innerHTML=`<b>${c.name}</b><span>${c.to-c.from+1} questions</span><em>Q${c.from} – Q${c.to}</em>`;
+    b.onclick=()=>selectCategory(c.id); grid.appendChild(b);
+  });
+}
+
+function selectCategory(id){
+  state.selectedCategory=id;
+  const c=id==="all"?null:getCategory(id);
+  $("selectedLabel").textContent=c?c.name:"All questions";
+  $("setupDescription").textContent=c?`${c.name} • Q${c.from}–Q${c.to}`:"All worksheet questions • Q1–Q1050";
+  renderCategories(); openSetup();
+}
+
+function openSetup(){$("setupOverlay").style.display="flex"}
+function closeSetup(){$("setupOverlay").style.display="none"}
+
+function startPractice(){
+  clearInterval(state.timerId);
+  clearTimeout(state.advanceTimerId);
+  state.advanceTimerId=null;
+  let pool=categoryQuestions(state.selectedCategory);
+  const count=Math.max(1,Math.min(Number($("sessionCount").value)||20,pool.length));
+  state.timeLimit=Math.max(1,Number($("timeInput").value)||10);
+  if($("orderInput").value==="random") pool=pool.slice().sort(()=>Math.random()-.5);
+
+  state.sessionQuestions=pool.slice(0,count);
+  state.current=0;state.solved=0;state.timeout=0;state.solveTimes=[];state.locked=false;
+
+  closeSetup();$("dashboard").style.display="none";$("resultsScreen").style.display="none";$("practice").style.display="flex";
+  renderQuestion();
+}
+
+function renderQuestion(){
+  clearInterval(state.timerId);
+  clearTimeout(state.advanceTimerId);
+  state.advanceTimerId=null;
+  state.locked=false;
+  const q=state.sessionQuestions[state.current],c=getCategory(q.category);
+
+  $("practiceMeta").textContent=c?c.name:"";
+  $("progress").textContent=`${state.current+1} / ${state.sessionQuestions.length}`;
+  $("questionNo").textContent=`Question ${q.id}`;
+  $("question").textContent=q.expression;
+
+  $("question").style.display="block";$("timer").style.display="block";
+  $("solvedResult").style.display="none";$("timeoutResult").style.display="none";$("hint").style.display="block";
+
+  state.startedAt=performance.now();
+  $("timer").textContent=state.timeLimit.toFixed(1);
+  $("timer").style.color="var(--yellow)";
+
+  state.timerId=setInterval(()=>{
+    if(state.locked)return;
+    const elapsed=(performance.now()-state.startedAt)/1000;
+    const remaining=state.timeLimit-elapsed;
+    if(remaining<=0){
+      clearInterval(state.timerId);$("timer").textContent="0.0";handleTimeout();return;
+    }
+    $("timer").textContent=remaining.toFixed(1);
+    if(remaining<=3)$("timer").style.color="var(--red)";
+    else if(remaining<=5)$("timer").style.color="var(--yellow)";
+  },50);
+}
+
+function calculate(expression){
+  const normalized=String(expression)
+    .replace(/[−–—]/g,"-")
+    .replace(/\s+/g,"");
+
+  // The worksheet contains addition/subtraction expressions only.
+  // Parse them explicitly so a minus sign can never be accidentally removed.
+  if(!/^\d+(?:\.\d+)?(?:[+-]\d+(?:\.\d+)?)*$/.test(normalized)){
+    throw new Error("Unsupported expression: "+expression);
+  }
+
+  const tokens=normalized.match(/[+-]?\d+(?:\.\d+)?/g);
+  if(!tokens) throw new Error("Invalid expression: "+expression);
+
+  const value=tokens.reduce((sum,token)=>sum+Number(token),0);
+  if(!Number.isFinite(value)) throw new Error("Invalid arithmetic result");
+
+  const rounded=Math.round((value+Number.EPSILON)*1e12)/1e12;
+  return Object.is(rounded,-0)?0:rounded;
+}
+
+function solveQuestion(){
+  if(state.locked)return;
+  state.locked=true;clearInterval(state.timerId);
+
+  const elapsed=(performance.now()-state.startedAt)/1000;
+  const q=state.sessionQuestions[state.current];
+  state.solved++;state.solveTimes.push(elapsed);
+
+  $("question").style.display="none";$("timer").style.display="none";$("hint").style.display="none";
+  $("solvedResult").style.display="block";
+  $("solvedTime").textContent=`Solved in ${elapsed.toFixed(2)} seconds`;
+  $("solvedAnswer").textContent=`Correct Answer: ${calculate(q.expression)}`;
+
+  state.advanceTimerId=setTimeout(()=>{
+    state.advanceTimerId=null;
+    if(state.locked) goNext();
+  },4000);
+}
+
+function handleTimeout(){
+  if(state.locked)return;
+  state.locked=true;state.timeout++;
+  const q=state.sessionQuestions[state.current];
+
+  $("question").style.display="none";$("timer").style.display="none";$("hint").style.display="none";
+  $("timeoutResult").style.display="block";
+  $("timeoutAnswer").textContent=`Correct Answer: ${calculate(q.expression)}`;
+  state.advanceTimerId=setTimeout(()=>{
+    state.advanceTimerId=null;
+    if(state.locked) goNext();
+  },4000);
+}
+
+function goNext(){
+  if(state.current>=state.sessionQuestions.length-1){finishPractice();return}
+  state.current++;renderQuestion();
+}
+
+function goPrevious(){
+  if(state.current<=0||state.locked)return;
+  state.current--;renderQuestion();
+}
+
+function skipQuestion(){
+  if(state.locked)return;
+  clearInterval(state.timerId);state.locked=true;goNext();
+}
+
+function finishPractice(){
+  clearInterval(state.timerId);
+  clearTimeout(state.advanceTimerId);
+  state.advanceTimerId=null;$("practice").style.display="none";$("resultsScreen").style.display="flex";
+  const total=state.sessionQuestions.length;
+  const avg=state.solveTimes.length?state.solveTimes.reduce((a,b)=>a+b,0)/state.solveTimes.length:0;
+  $("statQuestions").textContent=total;$("statSolved").textContent=state.solved;$("statTimeout").textContent=state.timeout;
+  $("statAvg").textContent=state.solveTimes.length?avg.toFixed(2)+"s":"—";
+  const c=state.selectedCategory==="all"?"All questions":getCategory(state.selectedCategory).name;
+  $("resultsSubtitle").textContent=`${c} • ${total} questions • ${state.timeLimit}s per question`;
+}
+
+function goHome(){
+  clearInterval(state.timerId);
+  clearTimeout(state.advanceTimerId);
+  state.advanceTimerId=null;
+  closeSetup();$("practice").style.display="none";$("resultsScreen").style.display="none";$("dashboard").style.display="block";
+}
+
+$("startBtn").onclick=startPractice;$("cancelSetup").onclick=closeSetup;$("settingsBtn").onclick=openSetup;
+$("homeBtn").onclick=goHome;$("quitBtn").onclick=goHome;$("againBtn").onclick=openSetup;$("resultHomeBtn").onclick=goHome;
+$("spaceBtn").onclick=solveQuestion;$("prevBtn").onclick=goPrevious;$("nextBtn").onclick=skipQuestion;
+$("sessionCount").oninput=()=>$("sessionCountLabel").textContent=$("sessionCount").value;
+$("timeInput").oninput=()=>$("timeLabel").textContent=$("timeInput").value;
+
+document.addEventListener("keydown",e=>{
+  if(e.code==="Space"){
+    e.preventDefault();
+    if($("practice").style.display==="flex")solveQuestion();
+  }
+  if(e.key==="Escape"&&$("setupOverlay").style.display==="flex")closeSetup();
+});
+
+renderCategories();renderPracticeCards();
+
+(function setupMobileSwipe(){
+  let startX=0, startY=0, startTime=0;
+  const stage=()=>document.querySelector('#practice .focus');
+  document.addEventListener('touchstart', e=>{
+    if(e.touches.length!==1) return;
+    startX=e.touches[0].clientX;
+    startY=e.touches[0].clientY;
+    startTime=Date.now();
+  }, {passive:true});
+
+  document.addEventListener('touchend', e=>{
+    if(!startTime || e.changedTouches.length!==1) return;
+    const dx=e.changedTouches[0].clientX-startX;
+    const dy=e.changedTouches[0].clientY-startY;
+    const dt=Date.now()-startTime;
+    startTime=0;
+
+    // Only treat deliberate horizontal gestures as navigation.
+    if(Math.abs(dx)<70 || Math.abs(dx)<Math.abs(dy)*1.25 || dt>700) return;
+
+    const s=stage();
+    if(s) {
+      s.classList.remove('swipe-left','swipe-right');
+      void s.offsetWidth;
+      s.classList.add(dx<0?'swipe-left':'swipe-right');
+      setTimeout(()=>s.classList.remove('swipe-left','swipe-right'),220);
+    }
+
+    if(dx<0){
+      // Swipe left: next question. Reuse the app's existing Skip/Next control.
+      const el=document.getElementById('skipBtn');
+      if(el) el.click();
+      else {
+        const b=[...document.querySelectorAll('button')].find(x=>{
+          const t=x.textContent.trim().toLowerCase();
+          return t==='skip' || t==='next';
+        });
+        if(b) b.click();
+      }
+    }else{
+      // Swipe right: previous question. Reuse the existing Previous control.
+      const el=document.getElementById('prevBtn');
+      if(el) el.click();
+      else {
+        const b=[...document.querySelectorAll('button')].find(x=>{
+          const t=x.textContent.trim().toLowerCase();
+          return t.includes('previous') || t.includes('back');
+        });
+        if(b && !b.disabled) b.click();
+      }
+    }
+  }, {passive:true});
+})();
+</script>
+</body>
+</html>
