@@ -11,7 +11,7 @@
   --green:#4ade80;--yellow:#facc15;--red:#f87171;
 }
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-body{overflow:hidden}button{font:inherit}.app{height:100vh;display:flex;flex-direction:column}
+body{overflow:hidden}button{font:inherit}.app{height:100vh;height:100dvh;display:flex;flex-direction:column}
 .topbar{height:64px;display:flex;align-items:center;gap:18px;padding:0 22px;border-bottom:1px solid var(--border);background:rgba(9,9,11,.96);flex-shrink:0}
 .brand{font-weight:800;letter-spacing:-.4px;white-space:nowrap}.brand small{display:block;font-size:10px;color:var(--dim);font-weight:600;letter-spacing:.5px;margin-top:2px}
 .top-actions{margin-left:auto;display:flex;gap:8px}.icon-btn,.ghost-btn{border:1px solid var(--border);background:var(--panel);color:var(--muted);border-radius:9px;padding:9px 12px;cursor:pointer}
@@ -255,10 +255,11 @@ const CATEGORIES = [{"id":"ab_c","name":"Multiplication of ab × c","from":1,"to
 
 const state = {
   selectedCategory:"all",sessionQuestions:[],current:0,timeLimit:10,
-  timerId:null,advanceTimerId:null,startedAt:0,locked:false,solved:0,timeout:0,solveTimes:[]
+  timerId:null,advanceTimerId:null,startedAt:0,locked:false,solved:0,timeout:0,solveTimes:[],outcomes:[]
 };
 
 const $ = id => document.getElementById(id);
+function practiceActive(){return $("practice").style.display==="flex"&&$("setupOverlay").style.display!=="flex"}
 
 function getCategory(id){return CATEGORIES.find(c=>c.id===id)}
 function categoryQuestions(id){
@@ -315,7 +316,7 @@ function startPractice(){
   if($("orderInput").value==="random") pool=pool.slice().sort(()=>Math.random()-.5);
 
   state.sessionQuestions=pool.slice(0,count);
-  state.current=0;state.solved=0;state.timeout=0;state.solveTimes=[];state.locked=false;
+  state.current=0;state.solved=0;state.timeout=0;state.solveTimes=[];state.outcomes=[];state.locked=false;
 
   closeSetup();$("dashboard").style.display="none";$("resultsScreen").style.display="none";$("practice").style.display="flex";
   renderQuestion();
@@ -363,7 +364,8 @@ function solveQuestion(){
 
   const elapsed=(performance.now()-state.startedAt)/1000;
   const q=state.sessionQuestions[state.current];
-  state.solved++;state.solveTimes.push(elapsed);
+  // Count each question once, even if the user goes back with Previous and solves it again.
+  if(!state.outcomes[state.current]){state.outcomes[state.current]="solved";state.solved++;state.solveTimes.push(elapsed);}
 
   $("question").style.display="none";$("timer").style.display="none";$("hint").style.display="none";
   $("solvedResult").style.display="block";
@@ -378,7 +380,8 @@ function solveQuestion(){
 
 function handleTimeout(){
   if(state.locked)return;
-  state.locked=true;state.timeout++;
+  state.locked=true;
+  if(!state.outcomes[state.current]){state.outcomes[state.current]="timeout";state.timeout++;}
   const q=state.sessionQuestions[state.current];
 
   $("question").style.display="none";$("timer").style.display="none";$("hint").style.display="none";
@@ -441,9 +444,10 @@ $("sessionCount").oninput=()=>$("sessionCountLabel").textContent=$("sessionCount
 $("timeInput").oninput=()=>$("timeLabel").textContent=$("timeInput").value;
 
 document.addEventListener("keydown",e=>{
-  if(e.code==="Space"){
+  if(e.code==="Space"&&practiceActive()){
+    // Only take over Space during practice; elsewhere it must still activate focused buttons and scroll.
     e.preventDefault();
-    if($("practice").style.display==="flex")solveQuestion();
+    solveQuestion();
   }
   if(e.key==="Escape"&&$("setupOverlay").style.display==="flex")closeSetup();
 });
@@ -462,6 +466,8 @@ renderCategories();renderPracticeCards();
 
   document.addEventListener('touchend', e=>{
     if(!startTime || e.changedTouches.length!==1) return;
+    // Swipes on the dashboard, results screen or setup dialog must not drive the (hidden) session.
+    if(!practiceActive()){startTime=0;return;}
     const dx=e.changedTouches[0].clientX-startX;
     const dy=e.changedTouches[0].clientY-startY;
     const dt=Date.now()-startTime;
