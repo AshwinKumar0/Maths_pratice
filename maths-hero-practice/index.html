@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f6f1"><title>Maths Hero · Practice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=night-mode-1">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#home"><span class="brand-icon">m</span><span>maths<span class="brand-light">hero</span><small>PRACTICE STUDIO</small></span></a>
+      <div class="side-label">YOUR SPACE</div>
+      <button class="nav-item selected" data-page="home"><span class="nav-icon">▦</span> Overview</button>
+      <button class="nav-item" data-page="review"><span class="nav-icon">◷</span> Practice history</button>
+      <div class="sidebar-note"><span class="note-spark">✳</span><b>Small steps add up.</b><p>A little practice today builds confidence for tomorrow.</p></div>
+      <div class="sidebar-bottom"><div class="avatar">MH</div><span><b>My learning space</b><small>Progress saved on this device</small></span><span class="online-dot"></span></div>
+    </aside>
+    <main class="main-area">
+      <header class="topbar"><div class="crumb">MATHS HERO <span>/</span> <b id="top-context">OVERVIEW</b></div><div class="top-date" id="today"></div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Turn on night mode">☾ <span>Night mode</span></button><button class="mobile-menu" aria-label="Open menu">☰</button></header>
+      <section id="home-page" class="page">
+        <div class="welcome-row"><div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR PRACTICE SPACE</div><h1>Make progress,<br><span>one question at a time.</span></h1><p class="lede">Pick up where you left off or choose a chapter to begin.</p></div><div class="welcome-mark"><span>∑</span><i>✳</i></div></div>
+        <div class="stats-grid"><article class="stat-card"><div class="stat-top"><span class="stat-icon mint">✓</span><span class="stat-caption">QUESTIONS TRIED</span></div><strong id="stat-tried">0</strong><small>Across all your practice</small></article><article class="stat-card"><div class="stat-top"><span class="stat-icon peach">◷</span><span class="stat-caption">SHEETS IN PROGRESS</span></div><strong id="stat-active">0</strong><small>Ready when you are</small></article><article class="stat-card"><div class="stat-top"><span class="stat-icon lilac">▤</span><span class="stat-caption">CHAPTERS</span></div><strong id="stat-chapters">17</strong><small>Build your skills step by step</small></article></div>
+        <div id="resume-wrap"></div>
+        <div class="section-heading"><div><div class="eyebrow">THE LIBRARY</div><h2>Choose a chapter</h2></div><div class="search-wrap"><span>⌕</span><input id="chapter-search" placeholder="Find a chapter" aria-label="Find a chapter"></div></div>
+        <div id="chapter-grid" class="chapter-grid"></div>
+        <footer class="footer">Made for steady progress <span>✳</span></footer>
+      </section>
+      <section id="practice-page" class="page hidden"></section>
+      <section id="review-page" class="page hidden"><div class="history-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR JOURNEY</div><h1 class="page-title">Practice history</h1><p class="lede">Your attempts, organized by chapter and practice sheet.</p></div><div class="history-actions"><button id="clear-history" class="clear-history" hidden>Clear history</button><button id="delete-progress" class="delete-progress" hidden>Delete all progress</button></div></div><div id="history-content"></div></section>
+    </main>
+  </div>
+  <script src="app.js?v=night-mode-1"></script>
+</body>
+</html>

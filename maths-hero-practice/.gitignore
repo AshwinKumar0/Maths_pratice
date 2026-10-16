@@ -1,0 +1,6 @@
+practice_progress.sqlite3
+practice_progress.sqlite3-*
+local_settings.json
+__pycache__/
+*.py[cod]
+tmp/
