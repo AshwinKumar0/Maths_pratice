@@ -5,7 +5,7 @@
   <meta name="theme-color" content="#f7f6f1"><title>Maths Hero · Practice</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=night-mode-1">
+  <link rel="stylesheet" href="styles.css?v=format-mcq-fractions-20261017">
 </head>
 <body>
   <div class="app-shell">
@@ -14,6 +14,7 @@
       <div class="side-label">YOUR SPACE</div>
       <button class="nav-item selected" data-page="home"><span class="nav-icon">▦</span> Overview</button>
       <button class="nav-item" data-page="review"><span class="nav-icon">◷</span> Practice history</button>
+      <button class="nav-item" data-page="music"><span class="nav-icon">♫</span> Focus music</button>
       <div class="sidebar-note"><span class="note-spark">✳</span><b>Small steps add up.</b><p>A little practice today builds confidence for tomorrow.</p></div>
       <div class="sidebar-bottom"><div class="avatar">MH</div><span><b>My learning space</b><small>Progress saved on this device</small></span><span class="online-dot"></span></div>
     </aside>
@@ -28,9 +29,31 @@
         <footer class="footer">Made for steady progress <span>✳</span></footer>
       </section>
       <section id="practice-page" class="page hidden"></section>
+      <section id="music-page" class="page hidden">
+        <div class="music-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> STUDY MODE</div><h1 class="page-title">Focus music</h1><p class="lede">Play long tracks or playlists from your Navidrome library while you study.</p></div><div class="music-mark" aria-hidden="true">♫</div></div>
+        <form id="music-connect-form" class="music-connect-card">
+          <div class="music-card-heading"><div><div class="eyebrow">YOUR MUSIC SERVER</div><h2>Connect Navidrome</h2><p>Create your account at <a href="http://127.0.0.1:4533" target="_blank" rel="noopener">Navidrome setup ↗</a>, then sign in here. Remembered credentials are encrypted for your Windows account.</p></div><span class="music-server-icon">♫</span></div>
+          <div class="music-connect-fields"><label>Server address<input id="music-server-url" type="url" placeholder="http://localhost:4533" required autocomplete="url"></label><label>Username<input id="music-username" type="text" placeholder="Navidrome username" required autocomplete="username"></label><label>Password<input id="music-password" type="password" placeholder="Navidrome password" required autocomplete="current-password"></label></div>
+          <label class="music-remember"><input id="music-remember" type="checkbox" checked><span>Remember this connection on this Windows account</span></label>
+          <div class="music-connect-actions"><p id="music-status" role="status">Your Navidrome server needs a music library and at least one playlist.</p><button class="primary-btn" id="music-connect" type="submit">Connect</button></div>
+          <div class="music-error" id="music-error" role="alert"></div>
+        </form>
+        <section class="music-library-card hidden" id="music-library">
+          <div class="music-card-heading"><div><div class="eyebrow">YOUR LIBRARY</div><h2>Choose a focus playlist</h2><p id="music-playlist-count">Your playlists from Navidrome.</p></div><button class="music-disconnect" id="music-disconnect" type="button">Disconnect</button></div>
+          <div class="music-playlist-picker"><label for="music-playlist">PLAYLIST</label><select id="music-playlist"><option value="">Choose a playlist</option></select></div>
+          <div id="music-track-list" class="music-track-list"><div class="music-empty">Connect to see your playlists.</div></div>
+          <p class="music-note">Playback continues when you switch to Overview, a chapter, or Practice history.</p>
+        </section>
+      </section>
       <section id="review-page" class="page hidden"><div class="history-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR JOURNEY</div><h1 class="page-title">Practice history</h1><p class="lede">Your attempts, organized by chapter and practice sheet.</p></div><div class="history-actions"><button id="clear-history" class="clear-history" hidden>Clear history</button><button id="delete-progress" class="delete-progress" hidden>Delete all progress</button></div></div><div id="history-content"></div></section>
     </main>
   </div>
-  <script src="app.js?v=night-mode-1"></script>
+  <div id="music-dock" class="music-dock hidden"><div class="music-dock-now"><span class="music-playing-indicator">♫</span><span><small>NOW PLAYING</small><b id="music-now-title">Choose a focus track</b></span></div><audio id="focus-audio" controls preload="none"></audio></div>
+  <script src="app.js?v=format-mcq-fractions-20261017"></script>
 </body>
 </html>
+
+
+
+
+
